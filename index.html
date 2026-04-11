@@ -291,6 +291,7 @@ body{font-family:'Microsoft JhengHei','Noto Sans TC',sans-serif;color:var(--text
   <!-- 中間內容 -->
   <div class="content-area" id="contentArea">
     <div id="homeView"></div>
+    <div id="seriesView" style="display:none"></div>
     <div id="articleView" style="display:none"></div>
     <div id="searchView" style="display:none"></div>
   </div>
@@ -389,10 +390,45 @@ const rsCollapsed=new Set();
 /* Tab 切換 */
 function switchTab(t){
   curTab=t;
-  ['homeView','articleView','searchView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
+  ['homeView','seriesView','articleView','searchView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
   document.getElementById('contentArea').scrollTop=0;
   updateRightRelated();
+}
+
+
+/* 系列文章清單 */
+function showSeries(sid){
+  const s=SERIES.find(x=>x.id===sid);
+  const arts=ARTS.filter(a=>a.s===sid);
+  const color=sc(sid);
+  document.getElementById('subTitle').textContent=s.name;
+  document.getElementById('seriesView').innerHTML=`
+    <div class="home-wrap">
+      <div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">
+        <span style="font-size:28px">${ICONS[sid]||'📋'}</span>
+        <div>
+          <div style="font-size:18px;font-weight:700;color:${color}">${s.name}</div>
+          <div style="font-size:13px;color:#888">共 ${arts.length} 篇</div>
+        </div>
+      </div>
+      <div style="display:flex;flex-direction:column;gap:10px">
+        ${arts.map(a=>{
+          const done=readSet.has(a.code);
+          return \`<div onclick="openArt('\${a.code}')" style="cursor:pointer;background:#fff;border-radius:10px;border:1px solid #eee;border-left:4px solid \${color};padding:14px 16px;transition:box-shadow .15s" onmouseover="this.style.boxShadow='0 2px 10px rgba(0,0,0,.08)'" onmouseout="this.style.boxShadow=''">
+            <div style="display:flex;justify-content:space-between;align-items:center">
+              <span style="font-size:12px;font-weight:600;color:\${color}">\${a.code}</span>
+              \${done?'<span style="font-size:11px;color:#4caf50">✓ 已讀</span>':''}
+            </div>
+            <div style="font-size:14px;font-weight:600;color:#333;margin-top:4px">\${a.title}</div>
+          </div>\`;
+        }).join('')}
+      </div>
+      <div style="margin-top:16px">
+        <span onclick="switchTab('home')" style="cursor:pointer;font-size:13px;color:#888">← 返回首頁</span>
+      </div>
+    </div>`;
+  switchTab('series');
 }
 
 /* Sidebar 建立 */
@@ -569,7 +605,7 @@ function buildHome(){
           const done=ARTS.filter(a=>a.s===s.id&&readSet.has(a.code)).length;
           const pct=Math.round(done/total*100);
           return `<div class="hg-card" style="border-top-color:${s.color}"
-                       onclick="collapsed.delete('${s.id}');buildSidebar()">
+                       onclick="showSeries('${s.id}')">
             <div class="hg-code" style="color:${s.color}">${ICONS[s.id]} ${s.id}</div>
             <div class="hg-name">${s.name}</div>
             <div class="hg-foot">
