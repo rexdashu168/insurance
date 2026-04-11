@@ -12,7 +12,7 @@
   --bg:#f0ede6;--bg2:#f8f5ee;--bg3:#e8e4dc;--bg4:#dddad2;
   --text:#1a1a1a;--text2:#4a4a4a;--text3:#888;--text4:#bbb;
   --accent:#b8912a;--accent2:#d4a93c;--navy:#1a2744;
-  --sidebar-w:200px;--right-w:220px;
+  --sidebar-w:260px;--right-w:260px;
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
@@ -68,8 +68,8 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 /* sb 分組 */
 .sb-section{padding:4px 0}
 .sb-label{
-  padding:8px 14px 3px;font-size:12px;font-weight:700;color:var(--text4);
-  letter-spacing:1.5px;text-transform:uppercase;display:flex;align-items:center;
+  padding:10px 16px 4px;font-size:13px;font-weight:700;color:var(--text4);
+  letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;
   justify-content:space-between;cursor:pointer;user-select:none;
 }
 .sb-label:hover{color:var(--text3)}
@@ -148,7 +148,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .rp-tip{font-size:13px;color:var(--text3);line-height:1.75;background:var(--bg3);padding:8px 10px;border-radius:5px}
 
 /* ── 首頁 ── */
-.home-wrap{padding:24px 24px 60px;max-width:700px}
+.home-wrap{padding:32px 36px 60px;max-width:100%}
 .welcome-message{
   background:#fff;border:1px solid var(--bg4);border-radius:10px;
   padding:28px 28px 24px;margin-bottom:16px;text-align:center;
@@ -156,22 +156,23 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .welcome-message h2{font-size:22px;font-weight:700;color:var(--navy);margin:14px 0 8px}
 .welcome-message p{font-size:13px;color:var(--text3);line-height:1.7}
 .home-icon{font-size:40px;display:block}
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;margin-bottom:14px}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
 .hg-card{
-  background:#fff;border:1px solid var(--bg4);border-top:3px solid transparent;
-  border-radius:8px;padding:12px 10px 9px;cursor:pointer;transition:all .15s;
+  background:#fff;border:1px solid var(--bg4);border-top:4px solid transparent;
+  border-radius:12px;padding:20px 18px 16px;cursor:pointer;transition:all .18s;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
 }
-.hg-card:hover{transform:translateY(-2px);box-shadow:0 4px 14px rgba(0,0,0,.08)}
-.hg-code{font-size:20px;font-weight:700;margin-bottom:3px}
-.hg-name{font-size:14px;color:var(--text2);line-height:1.4;margin-bottom:6px}
+.hg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.hg-code{font-size:22px;font-weight:700;margin-bottom:6px}
+.hg-name{font-size:15px;color:var(--text2);line-height:1.5;margin-bottom:10px}
 .hg-foot{display:flex;justify-content:space-between}
-.hg-cnt{font-size:12px;color:var(--text4)}
-.hg-pct{font-size:12px;font-weight:600}
+.hg-cnt{font-size:13px;color:var(--text4)}
+.hg-pct{font-size:13px;font-weight:700}
 .home-disclaimer{background:var(--navy);border-radius:8px;padding:14px 18px;color:rgba(255,255,255,.7);font-size:12px;line-height:1.85}
 .home-disclaimer strong{color:#fff}
 
 /* ── 文章頁 ── */
-.art-container{background:#fff;margin:8px;border-radius:10px;border:1px solid var(--bg4);padding:24px 28px 40px}
+.art-container{background:#fff;margin:16px;border-radius:14px;border:1px solid var(--bg4);padding:36px 44px 48px}
 .art-breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text4);margin-bottom:16px;flex-wrap:wrap}
 .art-breadcrumb a{color:var(--accent);cursor:pointer;text-decoration:none}
 .art-breadcrumb a:hover{text-decoration:underline}
@@ -233,8 +234,8 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   .mobile-menu-btn{display:flex!important}
   .dot-row{display:none}
   .home-wrap{padding:14px 14px 60px}
-  .home-grid{grid-template-columns:1fr 1fr}
-  .art-container{margin:6px;padding:16px 16px 36px}
+  .home-grid{grid-template-columns:1fr 1fr;gap:10px}
+  .art-container{margin:8px;padding:20px 18px 40px}
   .art-h1{font-size:20px}
   .art-nav{flex-direction:column}
   .footer{display:none}
