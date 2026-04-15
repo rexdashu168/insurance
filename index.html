@@ -210,15 +210,15 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 /* ── 底部 ── */
 .bottombar{
-  display:flex;align-items:center;padding:0 14px;height:58px;
+  display:flex;align-items:center;padding:8px 16px;height:58px;
   background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:10px;z-index:50;
 }
 .bot-btn{width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--bg4);cursor:pointer;font-size:15px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bot-ver{font-size:11px;color:var(--text4);font-weight:600;flex-shrink:0}
-.bot-input{flex:1;background:var(--bg3);border:1px solid var(--bg4);border-radius:10px;padding:12px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;transition:all .2s}
+.bot-input{flex:1;min-width:0;background:var(--bg3);border:1px solid var(--bg4);border-radius:10px;padding:12px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;transition:all .2s}
 .bot-input:focus{border-color:var(--accent);background:#fff}
 .bot-input::placeholder{color:var(--text4)}
-.bot-go{padding:11px 22px;background:var(--text4);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;transition:background .15s}
+.bot-go{padding:11px 18px;background:var(--text4);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;transition:background .15s}
 .bot-go.ready{background:var(--navy)}
 
 /* ── 版權 ── */
@@ -238,12 +238,12 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   .subtitle .title{font-size:14px}
   .subtitle .meta{margin-left:0;font-size:12px}
   /* 首頁 */
-  .home-wrap{padding:20px 18px 80px}
-  .home-grid{grid-template-columns:1fr 1fr;gap:16px}
-  .hg-card{padding:20px 18px 18px;min-height:130px;display:flex;flex-direction:column}
-  .hg-code{font-size:20px;margin-bottom:8px}
-  .hg-name{font-size:14px;line-height:1.5;margin-bottom:auto}
-  .hg-foot{padding-top:10px}
+  .home-wrap{padding:16px 14px 80px}
+  .home-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .hg-card{padding:16px 14px 14px;min-height:110px;display:flex;flex-direction:column}
+  .hg-code{font-size:18px;margin-bottom:6px}
+  .hg-name{font-size:13px;line-height:1.45;margin-bottom:auto}
+  .hg-foot{padding-top:8px}
   .hg-cnt{font-size:12px}
   .hg-pct{font-size:12px}
   /* 文章頁 */
