@@ -249,6 +249,34 @@ body{height:100%;height:100dvh;overflow:hidden;overflow-x:hidden;background:var(
 .bot-go:active{transform:scale(.92)}
 .bot-go.ready{background:var(--accent)}
 
+/* ── 新聞 ── */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+.news-card{
+  background:#fff;border:1px solid var(--bg4);border-top:4px solid transparent;
+  border-radius:12px;padding:22px 20px 18px;cursor:pointer;transition:all .18s;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.news-card-icon{font-size:28px;margin-bottom:8px}
+.news-card-name{font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-weight:600}
+.news-card-cnt{font-size:13px;color:var(--text4)}
+.news-item{
+  padding:16px 18px;margin-bottom:10px;background:#fff;border:1px solid var(--bg4);
+  border-left:4px solid transparent;border-radius:10px;cursor:pointer;transition:all .15s;
+}
+.news-item:hover{border-left-color:var(--accent);background:#faf8f2}
+.news-item-date{font-size:12px;color:var(--text4);margin-bottom:4px}
+.news-item-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.5}
+.news-item-summary{font-size:14px;color:var(--text3);line-height:1.7;margin-bottom:6px}
+.news-item-source{font-size:12px;color:var(--accent);font-weight:600}
+.news-item-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.news-tag{font-size:11px;padding:2px 8px;border-radius:10px;background:#f0ede6;color:var(--text3)}
+@media(max-width:660px){
+  .news-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .news-card{padding:16px 14px 14px}
+  .news-card-name{font-size:13px}
+}
+
 /* ── 版權 ── */
 .footer{height:36px;background:#fff;border-top:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text4);flex-shrink:0}
 
@@ -313,7 +341,8 @@ body{height:100%;height:100dvh;overflow:hidden;overflow-x:hidden;background:var(
     </svg>
   </div>
   <div class="tabs" id="tabsEl">
-    <div class="tab active" data-t="home" onclick="switchTab('home')">知識庫首頁</div>
+    <div class="tab active" data-t="home" onclick="switchTab('home')">知識庫</div>
+    <div class="tab" data-t="news" onclick="switchTab('news')">新聞報導</div>
     <div class="tab" data-t="article" id="artTabEl" style="display:none" onclick="switchTab('article')">閱讀中</div>
     <div class="tab" data-t="search" id="srTabEl" style="display:none" onclick="switchTab('search')">搜尋結果</div>
   </div>
@@ -357,6 +386,8 @@ body{height:100%;height:100dvh;overflow:hidden;overflow-x:hidden;background:var(
     <div id="seriesView" style="display:none"></div>
     <div id="articleView" style="display:none"></div>
     <div id="searchView" style="display:none"></div>
+    <div id="newsView" style="display:none"></div>
+    <div id="newsCatView" style="display:none"></div>
   </div>
 
   <!-- 右側 -->
@@ -471,6 +502,8 @@ function navGo(dir){
   else if(s.type==='series')showSeries(s.id);
   else if(s.type==='article')openArt(s.code);
   else if(s.type==='search'){document.getElementById('botInput').value=s.q;doSearch();}
+  else if(s.type==='news')showNewsHome();
+  else if(s.type==='newsCat')showNewsCat(s.id);
   navLock=false;
   updateNavBtns();
 }
@@ -488,10 +521,11 @@ const rsCollapsed=new Set();
 /* Tab 切換 */
 function switchTab(t){
   curTab=t;
-  ['homeView','seriesView','articleView','searchView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
+  ['homeView','seriesView','articleView','searchView','newsView','newsCatView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
   document.getElementById('contentArea').scrollTop=0;
-  if(t==='home')navPush({type:'home'});
+  if(t==='home'){navPush({type:'home'});document.getElementById('subTitle').textContent='保險財富傳承知識庫';}
+  if(t==='news')showNewsHome();
   updateRightRelated();
 }
 
@@ -736,6 +770,63 @@ function toggleMobileSidebar(){
 function closeMobileSidebar(){
   document.getElementById('sidebar').classList.remove('mobile-open');
   document.getElementById('mobile-overlay').classList.remove('show');
+}
+
+/* 新聞模組 */
+var newsData=null;
+function loadNews(){
+  if(newsData)return Promise.resolve(newsData);
+  return fetch('data/news.json').then(r=>r.json()).then(d=>{newsData=d;return d});
+}
+function showNewsHome(){
+  loadNews().then(function(d){
+    var cats=d.categories;
+    var arts=d.articles;
+    document.getElementById('subTitle').textContent='稅務新聞報導';
+    document.getElementById('newsView').innerHTML=
+      '<div class="home-wrap">'+
+      '<div style="margin-bottom:18px">'+
+      '<div style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:4px">📰 稅務新聞報導</div>'+
+      '<div style="font-size:14px;color:var(--text3)">精選各類稅務、保險、財經新聞重點摘要</div>'+
+      '</div>'+
+      '<div class="news-grid">'+
+      cats.map(function(c){
+        var cnt=arts.filter(function(a){return a.cat===c.id}).length;
+        return '<div class="news-card" style="border-top-color:'+c.color+'" onclick="showNewsCat(\''+c.id+'\')">'+
+          '<div class="news-card-icon">'+c.icon+'</div>'+
+          '<div class="news-card-name" style="color:'+c.color+'">'+c.name+'</div>'+
+          '<div class="news-card-cnt">'+cnt+' 篇報導</div>'+
+          '</div>';
+      }).join('')+
+      '</div></div>';
+    navPush({type:'news'});
+    switchTab('news');
+  });
+}
+function showNewsCat(catId){
+  loadNews().then(function(d){
+    var cat=d.categories.find(function(c){return c.id===catId});
+    var arts=d.articles.filter(function(a){return a.cat===catId}).sort(function(a,b){return b.date.localeCompare(a.date)});
+    document.getElementById('subTitle').textContent=cat.icon+' '+cat.name;
+    document.getElementById('newsCatView').innerHTML=
+      '<div class="home-wrap">'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">'+
+      '<span style="font-size:28px">'+cat.icon+'</span>'+
+      '<div><div style="font-size:20px;font-weight:700;color:'+cat.color+'">'+cat.name+'</div>'+
+      '<div style="font-size:14px;color:var(--text3)">共 '+arts.length+' 篇報導</div></div></div>'+
+      (arts.length?arts.map(function(a){
+        return '<div class="news-item" style="border-left-color:'+cat.color+'" onclick="window.open(\''+a.url+'\',\'_blank\')">'+
+          '<div class="news-item-date">'+a.date+' · '+a.source+'</div>'+
+          '<div class="news-item-title">'+a.title+'</div>'+
+          '<div class="news-item-summary">'+a.summary+'</div>'+
+          (a.tags?'<div class="news-item-tags">'+a.tags.map(function(t){return '<span class="news-tag">#'+t+'</span>'}).join('')+'</div>':'')+
+          '</div>';
+      }).join(''):'<div style="padding:40px;text-align:center;color:var(--text4)">此分類尚無新聞</div>')+
+      '<div style="margin-top:16px"><span onclick="showNewsHome()" style="cursor:pointer;font-size:13px;color:#888">← 返回新聞首頁</span></div>'+
+      '</div>';
+    navPush({type:'newsCat',id:catId});
+    switchTab('newsCat');
+  });
 }
 
 /* 初始化 */
