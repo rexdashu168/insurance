@@ -715,10 +715,15 @@ updateProgress();
 switchTab('home');
 
 /* Dynamic viewport height for iOS */
-function setVH(){document.documentElement.style.setProperty('--vh',(window.innerHeight*0.01)+'px')}
-setVH();
-window.addEventListener('resize',setVH);
-if(window.visualViewport)window.visualViewport.addEventListener('resize',setVH);
+/* Adjust layout when iOS keyboard appears */
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',function(){
+    document.body.style.height=window.visualViewport.height+'px';
+  });
+  window.visualViewport.addEventListener('scroll',function(){
+    document.body.style.height=window.visualViewport.height+'px';
+  });
+}
 </script>
 </body>
 </html>
