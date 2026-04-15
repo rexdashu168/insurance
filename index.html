@@ -253,13 +253,13 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 @media(max-width:960px){.right-panel{display:none}}
 @media(max-width:660px){
   :root{--sidebar-w:0px}
-  .main{display:block!important;overflow-x:hidden}
-  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none}
+  .main{overflow-x:hidden}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;flex:0 0 0px!important;min-width:0!important;overflow:visible}
   .sidebar.mobile-open{transform:translateX(0)}
   .mobile-overlay.show{display:block}
   .mobile-menu-btn{display:flex!important}
   .dot-row{display:none}
-  .content-area{width:100%!important;overflow-x:hidden}
+  .content-area{width:100%!important;min-width:0!important;overflow-x:hidden}
   /* 副標列：手機版兩行排列 */
   .subtitle{padding:8px 16px;min-height:auto;flex-direction:column;align-items:flex-start;gap:2px;overflow:hidden}
   .subtitle .title{font-size:14px;white-space:normal;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;max-width:100%}
