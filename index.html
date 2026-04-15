@@ -210,16 +210,41 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 /* ── 底部 ── */
 .bottombar{
-  display:flex;align-items:center;padding:8px 16px;height:58px;
-  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:10px;z-index:50;
+  display:flex;align-items:center;padding:10px 12px;min-height:62px;
+  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:8px;z-index:50;
 }
-.bot-btn{width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--bg4);cursor:pointer;font-size:15px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
-.bot-ver{font-size:11px;color:var(--text4);font-weight:600;flex-shrink:0}
-.bot-input{flex:1;min-width:0;background:var(--bg3);border:1px solid var(--bg4);border-radius:10px;padding:12px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;transition:all .2s}
-.bot-input:focus{border-color:var(--accent);background:#fff}
-.bot-input::placeholder{color:var(--text4)}
-.bot-go{padding:11px 18px;background:var(--text4);border:none;border-radius:10px;color:#fff;font-size:14px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;transition:background .15s}
-.bot-go.ready{background:var(--navy)}
+.bot-action{
+  width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;font-size:16px;
+}
+.bot-action:active{transform:scale(.92)}
+.bot-action.menu{background:#e8f5e9;color:#2e7d32}
+.bot-action.menu:hover{background:#c8e6c9}
+.bot-action.refresh{background:#e3f2fd;color:#1565c0}
+.bot-action.refresh:hover{background:#bbdefb}
+.bot-ver{font-size:10px;color:#fff;background:var(--accent);padding:2px 8px;border-radius:10px;font-weight:700;flex-shrink:0;letter-spacing:.5px}
+.bot-input-wrap{
+  flex:1;min-width:0;display:flex;align-items:center;
+  background:#f5f5f5;border:1.5px solid #e0e0e0;border-radius:24px;
+  padding:0 6px 0 18px;transition:all .2s;height:42px;
+}
+.bot-input-wrap:focus-within{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(184,145,42,.1)}
+.bot-input{
+  flex:1;min-width:0;background:transparent;border:none;
+  font-family:inherit;font-size:15px;color:var(--text);outline:none;
+  padding:0;height:100%;
+}
+.bot-input::placeholder{color:#aaa;font-size:14px}
+.bot-go{
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:var(--navy);color:#fff;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;margin-left:2px;
+}
+.bot-go:hover{background:var(--accent)}
+.bot-go:active{transform:scale(.92)}
+.bot-go.ready{background:var(--accent)}
 
 /* ── 版權 ── */
 .footer{height:36px;background:#fff;border-top:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text4);flex-shrink:0}
@@ -377,14 +402,20 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 <!-- 底部搜尋 -->
 <div class="bottombar">
-  <button class="bot-btn" onclick="toggleMobileSidebar()">+</button>
-  <div style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" onclick="location.reload()">
-    <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
-  </div>
+  <button class="bot-action menu" onclick="toggleMobileSidebar()" title="目錄">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  </button>
+  <button class="bot-action refresh" onclick="location.reload()" title="重新整理">
+    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
+  </button>
   <span class="bot-ver">v7</span>
-  <input class="bot-input" id="botInput" placeholder="輸入篇名、系列或關鍵字搜尋全文…"
-         oninput="onSI(this.value)" onkeydown="if(event.key==='Enter')doSearch()">
-  <button class="bot-go" id="botGo" onclick="doSearch()">搜尋</button>
+  <div class="bot-input-wrap">
+    <input class="bot-input" id="botInput" placeholder="搜尋篇名或關鍵字…"
+           oninput="onSI(this.value)" onkeydown="if(event.key==='Enter')doSearch()">
+    <button class="bot-go" id="botGo" onclick="doSearch()" title="搜尋">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+  </div>
 </div>
 
 <!-- 版權 -->
