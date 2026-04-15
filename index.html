@@ -253,11 +253,12 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 @media(max-width:960px){.right-panel{display:none}}
 @media(max-width:660px){
   :root{--sidebar-w:0px}
-  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1)}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none}
   .sidebar.mobile-open{transform:translateX(0)}
   .mobile-overlay.show{display:block}
   .mobile-menu-btn{display:flex!important}
   .dot-row{display:none}
+  .content-area{width:100%!important}
   /* 副標列：手機版兩行排列 */
   .subtitle{padding:8px 16px;min-height:auto;flex-direction:column;align-items:flex-start;gap:2px}
   .subtitle .title{font-size:14px}
@@ -271,8 +272,13 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   .hg-foot{padding-top:8px}
   .hg-cnt{font-size:12px}
   .hg-pct{font-size:12px}
+  /* 搜尋結果 */
+  .sr-item{padding:14px 16px}
+  .sr-code{font-size:13px;margin-bottom:4px}
+  .sr-title{font-size:15px;margin-bottom:4px}
+  .sr-snip{font-size:14px}
   /* 文章頁 */
-  .art-container{margin:8px 6px;padding:28px 18px 44px}
+  .art-container{margin:8px;padding:28px 18px 44px}
   .art-h1{font-size:22px;line-height:1.5;margin-bottom:12px}
   .art-body p{font-size:17px;line-height:2.15;letter-spacing:0.3px}
   .art-body h2{font-size:18px;margin:24px 0 12px}
