@@ -5,8 +5,8 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
-<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1">
-<title>保險財富傳承知識庫 · Rex大叔</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>保險財富傳承知識庫 v7 · Rex大叔</title>
 <style>
 :root{
   --bg:#f0ede6;--bg2:#f8f5ee;--bg3:#e8e4dc;--bg4:#dddad2;
@@ -16,21 +16,21 @@
 }
 *{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
 html,body{height:100%;overflow:hidden;background:var(--bg)}
-body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px}
+body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
 
 /* ── 頂部 header ── */
 .header{
-  display:flex;align-items:center;padding:0 12px;height:46px;
-  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;gap:4px;
+  display:flex;align-items:center;padding:0 14px;height:54px;
+  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;gap:6px;
 }
 .dot-row{display:flex;gap:5px;align-items:center;margin-right:8px;flex-shrink:0}
 .dot{width:11px;height:11px;border-radius:50%}
 .dot-r{background:#ff5f56}.dot-y{background:#ffbd2e}.dot-g{background:#27c93f}.dot-b{background:#1fb6ff}
-.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:32px;height:32px;border-radius:6px;cursor:pointer;background:var(--bg3)}
-.tabs{display:flex;align-items:center;gap:2px;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none}
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;cursor:pointer;background:var(--bg3)}
+.tabs{display:flex;align-items:center;gap:6px;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none}
 .tabs::-webkit-scrollbar{display:none}
 .tab{
-  padding:8px 20px;border-radius:20px;font-size:15px;font-weight:500;color:var(--text3);
+  padding:10px 18px;border-radius:20px;font-size:15px;font-weight:500;color:var(--text3);
   cursor:pointer;white-space:nowrap;transition:all .15s;user-select:none;
 }
 .tab.active{background:#fff;color:var(--text);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.12)}
@@ -44,12 +44,12 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 /* ── 副標列 ── */
 .subtitle{
-  display:flex;align-items:center;padding:0 14px;height:32px;
+  display:flex;align-items:center;padding:10px 16px;min-height:44px;
   background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;
-  font-size:12px;gap:8px;
+  font-size:12px;gap:10px;flex-wrap:wrap;
 }
-.subtitle .title{font-weight:600;color:var(--text2);font-size:14px}
-.subtitle .meta{margin-left:auto;color:var(--text3);font-size:13px}
+.subtitle .title{font-weight:600;color:var(--text2);font-size:14px;white-space:nowrap}
+.subtitle .meta{margin-left:auto;color:var(--text3);font-size:13px;white-space:nowrap}
 .subtitle-progress{color:var(--accent);font-weight:600;font-size:13px}
 
 /* ── 主體三欄 ── */
@@ -68,7 +68,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 /* sb 分組 */
 .sb-section{padding:4px 0}
 .sb-label{
-  padding:10px 16px 4px;font-size:13px;font-weight:700;color:var(--text4);
+  padding:12px 16px 8px;font-size:13px;font-weight:700;color:var(--text4);
   letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;
   justify-content:space-between;cursor:pointer;user-select:none;
 }
@@ -79,8 +79,8 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 /* sb 項目 */
 .sb-item{
-  padding:10px 14px 10px 20px;font-size:15px;color:var(--text2);cursor:pointer;
-  display:flex;align-items:center;gap:7px;transition:all .1s;border-left:3px solid transparent;
+  padding:13px 14px 13px 20px;font-size:15px;color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all .1s;border-left:3px solid transparent;
 }
 .sb-item:hover{background:var(--bg3);color:var(--text)}
 .sb-item.active{background:#f0ece0;border-left-color:var(--accent);color:var(--navy);font-weight:600}
@@ -148,7 +148,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .rp-tip{font-size:13px;color:var(--text3);line-height:1.75;background:var(--bg3);padding:8px 10px;border-radius:5px}
 
 /* ── 首頁 ── */
-.home-wrap{padding:32px 36px 60px;max-width:100%}
+.home-wrap{padding:28px 32px 60px;max-width:100%}
 .welcome-message{
   background:#fff;border:1px solid var(--bg4);border-radius:10px;
   padding:28px 28px 24px;margin-bottom:16px;text-align:center;
@@ -156,15 +156,15 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .welcome-message h2{font-size:22px;font-weight:700;color:var(--navy);margin:14px 0 8px}
 .welcome-message p{font-size:13px;color:var(--text3);line-height:1.7}
 .home-icon{font-size:40px;display:block}
-.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:16px;margin-bottom:24px}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
 .hg-card{
   background:#fff;border:1px solid var(--bg4);border-top:4px solid transparent;
-  border-radius:12px;padding:20px 18px 16px;cursor:pointer;transition:all .18s;
+  border-radius:12px;padding:22px 20px 18px;cursor:pointer;transition:all .18s;
   box-shadow:0 1px 4px rgba(0,0,0,.05);
 }
 .hg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
-.hg-code{font-size:22px;font-weight:700;margin-bottom:6px}
-.hg-name{font-size:15px;color:var(--text2);line-height:1.5;margin-bottom:10px}
+.hg-code{font-size:22px;font-weight:700;margin-bottom:8px}
+.hg-name{font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:14px}
 .hg-foot{display:flex;justify-content:space-between}
 .hg-cnt{font-size:13px;color:var(--text4)}
 .hg-pct{font-size:13px;font-weight:700}
@@ -172,7 +172,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .home-disclaimer strong{color:#fff}
 
 /* ── 文章頁 ── */
-.art-container{background:#fff;margin:16px;border-radius:14px;border:1px solid var(--bg4);padding:36px 44px 48px}
+.art-container{background:#fff;margin:16px;border-radius:14px;border:1px solid var(--bg4);padding:36px 44px 48px;max-width:900px}
 .art-breadcrumb{display:flex;align-items:center;gap:6px;font-size:13px;color:var(--text4);margin-bottom:16px;flex-wrap:wrap}
 .art-breadcrumb a{color:var(--accent);cursor:pointer;text-decoration:none}
 .art-breadcrumb a:hover{text-decoration:underline}
@@ -180,15 +180,15 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .art-back{display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;padding:6px 14px;border-radius:8px;border:1px solid var(--accent);background:transparent;margin-bottom:16px;transition:all .15s}
 .art-back:hover{background:var(--accent);color:#fff}
 .art-badge{display:inline-flex;align-items:center;gap:4px;padding:4px 12px;border-radius:12px;font-size:12px;font-weight:700;margin-bottom:12px;border:1px solid transparent;letter-spacing:.3px}
-.art-h1{font-size:26px;font-weight:700;color:var(--navy);line-height:1.4;margin-bottom:10px}
+.art-h1{font-size:26px;font-weight:700;color:var(--navy);line-height:1.45;margin-bottom:14px}
 .art-meta{font-size:13px;color:var(--text4);display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:20px;padding-bottom:14px;border-bottom:1px solid var(--bg4)}
 .read-btn{margin-left:auto;padding:5px 14px;border-radius:12px;border:1px solid var(--bg4);font-size:13px;font-weight:600;cursor:pointer;background:var(--bg3);color:var(--text2);font-family:inherit;transition:all .15s}
 .read-btn.done{background:var(--accent);border-color:var(--accent);color:#fff}
-.art-body h2{font-size:19px;font-weight:700;color:var(--navy);margin:26px 0 10px;padding-left:9px;border-left:3px solid var(--accent)}
+.art-body h2{font-size:19px;font-weight:700;color:var(--navy);margin:28px 0 14px;padding-left:10px;border-left:3px solid var(--accent)}
 .art-body h2:first-child{margin-top:0}
-.art-body h3{font-size:16px;font-weight:700;color:var(--text2);margin:16px 0 7px}
-.art-body p{font-size:17px;line-height:2.1;color:var(--text2);margin-bottom:12px}
-.art-body blockquote{margin:14px 0;padding:11px 14px;border-left:3px solid var(--accent);background:#faf8f2;border-radius:0 6px 6px 0}
+.art-body h3{font-size:16px;font-weight:700;color:var(--text2);margin:20px 0 10px}
+.art-body p{font-size:17px;line-height:2.1;color:var(--text2);margin-bottom:16px;letter-spacing:0.3px}
+.art-body blockquote{margin:18px 0;padding:14px 18px;border-left:3px solid var(--accent);background:#faf8f2;border-radius:0 6px 6px 0}
 .art-body blockquote p{color:#7a6020;margin:0;font-size:16px}
 .art-body b.kn{color:#c0392b;font-weight:700}
 .art-nav{display:flex;gap:8px;margin-top:28px;padding-top:14px;border-top:1px solid var(--bg4)}
@@ -210,15 +210,15 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 
 /* ── 底部 ── */
 .bottombar{
-  display:flex;align-items:center;padding:0 12px;height:56px;
-  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:8px;z-index:50;
+  display:flex;align-items:center;padding:0 14px;height:58px;
+  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:10px;z-index:50;
 }
 .bot-btn{width:28px;height:28px;border-radius:6px;background:var(--bg3);border:1px solid var(--bg4);cursor:pointer;font-size:15px;color:var(--text3);display:flex;align-items:center;justify-content:center;flex-shrink:0}
 .bot-ver{font-size:11px;color:var(--text4);font-weight:600;flex-shrink:0}
-.bot-input{flex:1;background:var(--bg3);border:1px solid var(--bg4);border-radius:8px;padding:11px 14px;font-family:inherit;font-size:16px;color:var(--text);outline:none;transition:all .2s}
+.bot-input{flex:1;background:var(--bg3);border:1px solid var(--bg4);border-radius:10px;padding:12px 16px;font-family:inherit;font-size:16px;color:var(--text);outline:none;transition:all .2s}
 .bot-input:focus{border-color:var(--accent);background:#fff}
 .bot-input::placeholder{color:var(--text4)}
-.bot-go{padding:10px 20px;background:var(--text4);border:none;border-radius:8px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;transition:background .15s}
+.bot-go{padding:11px 22px;background:var(--text4);border:none;border-radius:10px;color:#fff;font-size:15px;font-weight:700;font-family:inherit;cursor:pointer;flex-shrink:0;transition:background .15s}
 .bot-go.ready{background:var(--navy)}
 
 /* ── 版權 ── */
@@ -233,10 +233,25 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   .mobile-overlay.show{display:block}
   .mobile-menu-btn{display:flex!important}
   .dot-row{display:none}
-  .home-wrap{padding:14px 14px 60px}
-  .home-grid{grid-template-columns:1fr 1fr;gap:10px}
-  .art-container{margin:8px;padding:20px 18px 40px}
-  .art-h1{font-size:20px}
+  /* 副標列：手機版兩行排列 */
+  .subtitle{padding:8px 16px;min-height:auto;flex-direction:column;align-items:flex-start;gap:2px}
+  .subtitle .title{font-size:14px}
+  .subtitle .meta{margin-left:0;font-size:12px}
+  /* 首頁 */
+  .home-wrap{padding:20px 18px 80px}
+  .home-grid{grid-template-columns:1fr 1fr;gap:16px}
+  .hg-card{padding:20px 18px 18px;min-height:130px;display:flex;flex-direction:column}
+  .hg-code{font-size:20px;margin-bottom:8px}
+  .hg-name{font-size:14px;line-height:1.5;margin-bottom:auto}
+  .hg-foot{padding-top:10px}
+  .hg-cnt{font-size:12px}
+  .hg-pct{font-size:12px}
+  /* 文章頁 */
+  .art-container{margin:8px 6px;padding:28px 18px 44px}
+  .art-h1{font-size:22px;line-height:1.5;margin-bottom:12px}
+  .art-body p{font-size:17px;line-height:2.15;letter-spacing:0.3px}
+  .art-body h2{font-size:18px;margin:24px 0 12px}
+  .art-body blockquote{padding:12px 14px}
   .art-nav{flex-direction:column}
   .footer{display:none}
 }
@@ -271,8 +286,8 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 <div class="subtitle">
   <span class="title" id="subTitle">保險財富傳承知識庫</span>
   <span class="meta">
-    Rex大叔 CFP · 許峰源法羽老師 · 共 58 篇 ／
-    <span class="subtitle-progress" id="subProg">已讀 0 / 58</span>
+    Rex大叔 CFP · 許峰源法羽老師 · 共 <span id="totalCount">0</span> 篇 ／
+    <span class="subtitle-progress" id="subProg">已讀 0 / 0</span>
   </span>
 </div>
 
@@ -317,7 +332,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
         <span class="toggle-icon" id="ic-prog">▾</span>
       </div>
       <div class="right-section-content" id="rs-prog">
-        <div class="rp-stat"><span>已完成</span><span class="rp-stat-val" id="rpNum">0 / 58 篇</span></div>
+        <div class="rp-stat"><span>已完成</span><span class="rp-stat-val" id="rpNum">0 / 0 篇</span></div>
         <div class="rp-track"><div class="rp-fill" id="rpFill" style="width:0%"></div></div>
         <div id="rpSeriesList"></div>
       </div>
@@ -341,7 +356,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
         <span class="toggle-icon" id="ic-tip">▾</span>
       </div>
       <div class="right-section-content" id="rs-tip">
-        <div class="rp-tip">左側依九大系列分組，點篇名閱讀。讀完後按「標記已讀」追蹤進度。底部可全文搜尋58篇內容。進度儲存在瀏覽器，不會消失。</div>
+        <div class="rp-tip">左側依系列分組，點篇名閱讀。讀完後按「標記已讀」追蹤進度。底部可全文搜尋 <span id="tipCount">0</span> 篇內容。進度儲存在瀏覽器，不會消失。</div>
       </div>
     </div>
 
@@ -366,7 +381,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   <div style="width:26px;height:26px;border-radius:50%;background:var(--bg3);border:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;cursor:pointer;flex-shrink:0" onclick="location.reload()">
     <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="#888" stroke-width="2"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
   </div>
-  <span class="bot-ver">v4.3</span>
+  <span class="bot-ver">v7</span>
   <input class="bot-input" id="botInput" placeholder="輸入篇名、系列或關鍵字搜尋全文…"
          oninput="onSI(this.value)" onkeydown="if(event.key==='Enter')doSearch()">
   <button class="bot-go" id="botGo" onclick="doSearch()">搜尋</button>
@@ -488,13 +503,18 @@ function toggleRS(id){
 /* 進度 */
 function updateProgress(){
   const n=readSet.size;
-  document.getElementById('subProg').textContent=`已讀 ${n} / 58`;
-  document.getElementById('rpNum').textContent=`${n} / 58 篇`;
-  document.getElementById('rpFill').style.width=Math.round(n/ARTS.length*100)+'%';
+  const total=ARTS.length;
+  document.getElementById('subProg').textContent=`已讀 ${n} / ${total}`;
+  document.getElementById('rpNum').textContent=`${n} / ${total} 篇`;
+  const totalEl=document.getElementById('totalCount');
+  if(totalEl) totalEl.textContent=total;
+  const tipEl=document.getElementById('tipCount');
+  if(tipEl) tipEl.textContent=total;
+  document.getElementById('rpFill').style.width=total?Math.round(n/total*100)+'%':'0%';
   document.getElementById('rpSeriesList').innerHTML=SERIES.map(s=>{
-    const total=ARTS.filter(a=>a.s===s.id).length;
+    const total_s=ARTS.filter(a=>a.s===s.id).length;
     const done=ARTS.filter(a=>a.s===s.id&&readSet.has(a.code)).length;
-    const pct=Math.round(done/total*100);
+    const pct=total_s?Math.round(done/total_s*100):0;
     return `<div class="rp-row">
       <div class="rp-dot" style="background:${s.color}"></div>
       <span style="font-size:13px;color:#555">${s.name}</span>
