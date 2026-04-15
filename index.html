@@ -14,14 +14,14 @@
   --accent:#b8912a;--accent2:#d4a93c;--navy:#1a2744;
   --sidebar-w:260px;--right-w:260px;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
-html,body{height:100%;overflow:hidden;background:var(--bg);overflow-x:hidden}
-body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;max-width:100%}
+html{height:100%;overflow:hidden;overflow-x:hidden;background:var(--bg)}
+body{height:100%;overflow:hidden;overflow-x:hidden;background:var(--bg);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;width:100%;position:relative}
 
 /* ── 頂部 header ── */
 .header{
   display:flex;align-items:center;padding:0 14px;height:54px;
-  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;gap:6px;overflow-x:hidden;
+  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;gap:6px;overflow:hidden;width:100%;
 }
 .dot-row{display:flex;gap:5px;align-items:center;margin-right:8px;flex-shrink:0}
 .dot{width:11px;height:11px;border-radius:50%}
@@ -46,14 +46,14 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 .subtitle{
   display:flex;align-items:center;padding:10px 16px;min-height:44px;
   background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;
-  font-size:12px;gap:10px;flex-wrap:wrap;overflow:hidden;
+  font-size:12px;gap:10px;flex-wrap:wrap;overflow:hidden;width:100%;
 }
 .subtitle .title{font-weight:600;color:var(--text2);font-size:14px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;min-width:0}
 .subtitle .meta{margin-left:auto;color:var(--text3);font-size:13px;white-space:nowrap;flex-shrink:0}
 .subtitle-progress{color:var(--accent);font-weight:600;font-size:13px}
 
 /* ── 主體三欄 ── */
-.main{flex:1;display:flex;overflow:hidden}
+.main{flex:1;display:flex;overflow:hidden;width:100%}
 
 /* ── Sidebar ── */
 .sidebar{
@@ -102,7 +102,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 }
 
 /* ── 中間內容 ── */
-.content-area{flex:1;overflow-y:auto;overscroll-behavior:contain;background:var(--bg)}
+.content-area{flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:var(--bg);min-width:0}
 .content-area::-webkit-scrollbar{width:4px}
 .content-area::-webkit-scrollbar-thumb{background:var(--bg4)}
 
@@ -211,7 +211,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 /* ── 底部 ── */
 .bottombar{
   display:flex;align-items:center;padding:10px 12px;min-height:62px;
-  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:8px;z-index:50;
+  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:8px;z-index:50;overflow:hidden;width:100%;
 }
 .bot-action{
   width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
@@ -254,7 +254,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
 @media(max-width:660px){
   :root{--sidebar-w:0px}
   .main{overflow-x:hidden}
-  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;flex:0 0 0px!important;min-width:0!important;overflow:visible}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px!important;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;flex:0 0 0px!important;min-width:0!important;overflow:visible}
   .sidebar.mobile-open{transform:translateX(0)}
   .mobile-overlay.show{display:block}
   .mobile-menu-btn{display:flex!important}
