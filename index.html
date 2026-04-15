@@ -14,9 +14,9 @@
   --accent:#b8912a;--accent2:#d4a93c;--navy:#1a2744;
   --sidebar-w:260px;--right-w:260px;
 }
-*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;max-width:100%}
-html{height:100%;overflow:hidden;overflow-x:hidden;background:var(--bg)}
-body{height:100%;overflow:hidden;overflow-x:hidden;background:var(--bg);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;width:100%;position:relative}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent}
+html{height:100%;overflow:hidden;background:var(--bg);position:fixed;width:100%;left:0;top:0;right:0;bottom:0}
+body{height:100%;overflow:hidden;background:var(--bg);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale;width:100%;position:relative}
 
 /* ── 頂部 header ── */
 .header{
@@ -420,7 +420,8 @@ body{height:100%;overflow:hidden;overflow-x:hidden;background:var(--bg);font-fam
   <span class="bot-ver">v7</span>
   <div class="bot-input-wrap">
     <input class="bot-input" id="botInput" placeholder="搜尋篇名或關鍵字…"
-           oninput="onSI(this.value)" onkeydown="if(event.key==='Enter')doSearch()">
+           oninput="onSI(this.value)" onkeydown="if(event.key==='Enter'){doSearch();this.blur()}"
+           onblur="window.scrollTo(0,0);document.documentElement.scrollLeft=0">
     <button class="bot-go" id="botGo" onclick="doSearch()" title="搜尋">
       <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
     </button>
@@ -638,6 +639,8 @@ function toggleRead(code){
 /* 搜尋 */
 function onSI(v){document.getElementById('botGo').classList.toggle('ready',v.trim().length>0)}
 function doSearch(){
+  document.getElementById('botInput').blur();
+  window.scrollTo(0,0);
   const q=document.getElementById('botInput').value.trim().toLowerCase();
   if(!q) return;
   const res=ARTS.filter(a=>a.title.toLowerCase().includes(q)||a.code.toLowerCase().includes(q)||sn(a.s).toLowerCase().includes(q)||a.html.toLowerCase().includes(q));
