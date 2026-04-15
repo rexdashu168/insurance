@@ -415,11 +415,14 @@ body{height:100%;height:100dvh;overflow:hidden;overflow-x:hidden;background:var(
 
 <!-- 底部搜尋 -->
 <div class="bottombar">
+  <button class="bot-action" id="navBack" style="background:#f3e8ff;color:#7c3aed;opacity:0.3" onclick="navGo(-1)" title="上一步">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="bot-action" id="navFwd" style="background:#f3e8ff;color:#7c3aed;opacity:0.3" onclick="navGo(1)" title="下一步">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
   <button class="bot-action menu" onclick="toggleMobileSidebar()" title="目錄">
     <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
-  </button>
-  <button class="bot-action refresh" onclick="location.reload()" title="重新整理">
-    <svg width="15" height="15" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="1 4 1 10 7 10"></polyline><path d="M3.51 15a9 9 0 1 0 .49-3.5"></path></svg>
   </button>
   <span class="bot-ver">v7</span>
   <div class="bot-input-wrap">
@@ -450,6 +453,32 @@ const ARTS=[{"code": "A01", "s": "A", "sname": "保險基礎觀念", "title": "�
 const ICONS={A:'📋',B:'🏦',C:'⚖️',D:'👨‍👩‍👧',E:'📄',F:'🔒',G:'🏠',H:'🏗️',I:'💼'};
 
 let cur=null,collapsed=new Set(),curTab='home';
+/* Navigation history */
+let navHistory=[],navPos=-1,navLock=false;
+function navPush(state){
+  if(navLock)return;
+  if(navPos<navHistory.length-1)navHistory=navHistory.slice(0,navPos+1);
+  navHistory.push(state);
+  navPos=navHistory.length-1;
+  updateNavBtns();
+}
+function navGo(dir){
+  var np=navPos+dir;
+  if(np<0||np>=navHistory.length)return;
+  navPos=np;navLock=true;
+  var s=navHistory[navPos];
+  if(s.type==='home')switchTab('home');
+  else if(s.type==='series')showSeries(s.id);
+  else if(s.type==='article')openArt(s.code);
+  else if(s.type==='search'){document.getElementById('botInput').value=s.q;doSearch();}
+  navLock=false;
+  updateNavBtns();
+}
+function updateNavBtns(){
+  var b=document.getElementById('navBack'),f=document.getElementById('navFwd');
+  if(b)b.style.opacity=navPos>0?'1':'0.3';
+  if(f)f.style.opacity=navPos<navHistory.length-1?'1':'0.3';
+}
 let readSet=new Set(JSON.parse(localStorage.getItem('rex_ins3')||'[]'));
 let recentList=JSON.parse(localStorage.getItem('rex_ins3_recent')||'[]');
 const sc=id=>(SERIES.find(x=>x.id===id)||{color:'#888'}).color;
@@ -462,9 +491,7 @@ function switchTab(t){
   ['homeView','seriesView','articleView','searchView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
   document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
   document.getElementById('contentArea').scrollTop=0;
-  document.getElementById('contentArea').scrollLeft=0;
-  document.documentElement.scrollLeft=0;document.body.scrollLeft=0;
-  window.scrollTo(0,0);
+  if(t==='home')navPush({type:'home'});
   updateRightRelated();
 }
 
@@ -495,6 +522,7 @@ function showSeries(sid){
     '<div>'+rows+'</div>'+
     '<div style="margin-top:16px"><span onclick="switchTab(\'home\')" style="cursor:pointer;font-size:13px;color:#888">← 返回首頁</span></div>'+
     '</div>';
+  navPush({type:'series',id:sid});
   switchTab('series');
 }
 
@@ -628,6 +656,7 @@ function openArt(code){
         ${next?`<div class="anb r" onclick="openArt('${next.code}')"><div class="anb-dir">下一篇 →</div><div class="anb-t">${next.code} ${next.title}</div></div>`:'<div></div>'}
       </div>
     </div>`;
+  navPush({type:'article',code:code});
   switchTab('article');
   buildSidebar();
   closeMobileSidebar();
@@ -670,6 +699,7 @@ function doSearch(){
     }).join('')+'</div>';
   }
   document.getElementById('srTabEl').style.display='';
+  navPush({type:'search',q:q});
   switchTab('search');
 }
 
@@ -714,8 +744,7 @@ buildHome();
 updateProgress();
 switchTab('home');
 
-/* Dynamic viewport height for iOS */
-/* Adjust layout when iOS keyboard appears */
+/* iOS keyboard viewport fix */
 if(window.visualViewport){
   window.visualViewport.addEventListener('resize',function(){
     document.body.style.height=window.visualViewport.height+'px';
@@ -724,6 +753,23 @@ if(window.visualViewport){
     document.body.style.height=window.visualViewport.height+'px';
   });
 }
+
+/* Swipe gesture navigation */
+(function(){
+  var sx=0,sy=0,swiping=false;
+  var ca=document.getElementById('contentArea');
+  ca.addEventListener('touchstart',function(e){
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;swiping=true;
+  },{passive:true});
+  ca.addEventListener('touchend',function(e){
+    if(!swiping)return;swiping=false;
+    var dx=e.changedTouches[0].clientX-sx;
+    var dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)<80||Math.abs(dy)>Math.abs(dx)*0.6)return;
+    if(dx>0)navGo(-1);  /* swipe right = back */
+    else navGo(1);       /* swipe left = forward */
+  },{passive:true});
+})();
 </script>
 </body>
 </html>
