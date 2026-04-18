@@ -1,0 +1,908 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+<meta charset="UTF-8">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@400;500;700&display=swap" rel="stylesheet">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>保險財富傳承知識庫 v8 · Rex大叔</title>
+<style>
+:root{
+  --bg:#f0ede6;--bg2:#f8f5ee;--bg3:#e8e4dc;--bg4:#dddad2;
+  --text:#1a1a1a;--text2:#4a4a4a;--text3:#888;--text4:#bbb;
+  --accent:#b8912a;--accent2:#d4a93c;--navy:#1a2744;
+  --sidebar-w:260px;--right-w:260px;
+}
+*{box-sizing:border-box;margin:0;padding:0;-webkit-tap-highlight-color:transparent;overflow-wrap:break-word;word-wrap:break-word}
+html{height:100%;height:100dvh;overflow:hidden;background:var(--bg);overflow-x:hidden;overscroll-behavior:none;touch-action:pan-y}
+body{height:100%;height:100dvh;overflow:hidden;overflow-x:hidden;background:var(--bg);font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;color:var(--text);display:flex;flex-direction:column;font-size:16px;-webkit-font-smoothing:antialiased;-moz-osx-font-smoothing:grayscale}
+
+/* ── 頂部 header ── */
+.header{
+  display:flex;align-items:center;padding:0 14px;height:54px;
+  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;gap:6px;
+  overflow:hidden;max-width:100vw;
+}
+.dot-row{display:flex;gap:5px;align-items:center;margin-right:8px;flex-shrink:0}
+.dot{width:11px;height:11px;border-radius:50%}
+.dot-r{background:#ff5f56}.dot-y{background:#ffbd2e}.dot-g{background:#27c93f}.dot-b{background:#1fb6ff}
+.mobile-menu-btn{display:none;align-items:center;justify-content:center;width:38px;height:38px;border-radius:8px;cursor:pointer;background:var(--bg3)}
+.tabs{display:flex;align-items:center;gap:6px;flex:1;justify-content:center;overflow-x:auto;scrollbar-width:none;min-width:0;-webkit-overflow-scrolling:touch}
+.tabs::-webkit-scrollbar{display:none}
+.tab{
+  padding:10px 18px;border-radius:20px;font-size:15px;font-weight:500;color:var(--text3);
+  cursor:pointer;white-space:nowrap;transition:all .15s;user-select:none;
+}
+.tab.active{background:#fff;color:var(--text);font-weight:700;box-shadow:0 1px 4px rgba(0,0,0,.12)}
+.tab:hover:not(.active){background:var(--bg3);color:var(--text2)}
+.btn-home{
+  width:36px;height:36px;border-radius:8px;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+  font-size:18px;flex-shrink:0;transition:opacity .15s;
+}
+.btn-home:hover{opacity:.85}
+
+/* ── 副標列 ── */
+.subtitle{
+  display:flex;align-items:center;padding:10px 16px;min-height:44px;
+  background:var(--bg2);border-bottom:1px solid var(--bg4);flex-shrink:0;
+  font-size:12px;gap:10px;flex-wrap:wrap;overflow:hidden;max-width:100vw;
+}
+.subtitle .title{font-weight:600;color:var(--text2);font-size:14px;overflow:hidden;text-overflow:ellipsis;min-width:0;white-space:nowrap}
+.subtitle .meta{margin-left:auto;color:var(--text3);font-size:13px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.subtitle-progress{color:var(--accent);font-weight:600;font-size:13px}
+
+/* ── 主體三欄 ── */
+.main{flex:1;display:flex;overflow:hidden;width:100%;min-height:0}
+
+/* ── Sidebar ── */
+.sidebar{
+  width:var(--sidebar-w);background:var(--bg2);border-right:1px solid var(--bg4);
+  display:flex;flex-direction:column;overflow:hidden;flex-shrink:0;position:relative;
+}
+.mobile-overlay{display:none;position:fixed;inset:0;background:rgba(0,0,0,.35);z-index:150}
+#sidebar-content{flex:1;overflow-y:auto;overscroll-behavior:contain}
+#sidebar-content::-webkit-scrollbar{width:3px}
+#sidebar-content::-webkit-scrollbar-thumb{background:var(--bg4)}
+
+/* sb 分組 */
+.sb-section{padding:4px 0}
+.sb-label{
+  padding:12px 16px 8px;font-size:13px;font-weight:700;color:var(--text4);
+  letter-spacing:1px;text-transform:uppercase;display:flex;align-items:center;
+  justify-content:space-between;cursor:pointer;user-select:none;
+}
+.sb-label:hover{color:var(--text3)}
+.sb-label-arr{font-size:11px;transition:transform .2s}
+.sb-label-arr.open{transform:rotate(90deg)}
+.sb-group-body.closed{display:none}
+
+/* sb 項目 */
+.sb-item{
+  padding:13px 14px 13px 20px;font-size:15px;color:var(--text2);cursor:pointer;
+  display:flex;align-items:center;gap:8px;transition:all .1s;border-left:3px solid transparent;
+}
+.sb-item:hover{background:var(--bg3);color:var(--text)}
+.sb-item.active{background:#f0ece0;border-left-color:var(--accent);color:var(--navy);font-weight:600}
+.sb-item.read::after{content:"✓";font-size:12px;color:#4caf50;margin-left:auto;flex-shrink:0}
+.sb-item-ico{font-size:13px;font-family:monospace;font-weight:700;min-width:32px;flex-shrink:0}
+
+/* sb 最近查詢 */
+.sb-recent{padding:4px 14px 8px;font-size:13px;color:var(--text4);line-height:1.8}
+
+/* sb 底部用戶 */
+.sb-user{
+  border-top:1px solid var(--bg4);padding:10px 14px;display:flex;align-items:center;
+  gap:10px;flex-shrink:0;background:var(--bg2);
+}
+.sb-avatar{
+  width:30px;height:30px;border-radius:50%;background:var(--accent);
+  display:flex;align-items:center;justify-content:center;
+  font-size:14px;color:#fff;font-weight:700;flex-shrink:0;
+}
+
+/* ── 中間內容 ── */
+.content-area{flex:1;overflow-y:auto;overflow-x:hidden;overscroll-behavior:contain;background:var(--bg);min-width:0;max-width:100%}
+.content-area::-webkit-scrollbar{width:4px}
+.content-area::-webkit-scrollbar-thumb{background:var(--bg4)}
+
+/* ── 右側面板 ── */
+.right-panel{
+  width:var(--right-w);background:var(--bg2);border-left:1px solid var(--bg4);
+  overflow-y:auto;flex-shrink:0;
+}
+.right-panel::-webkit-scrollbar{width:3px}
+.right-panel::-webkit-scrollbar-thumb{background:var(--bg4)}
+
+/* 右側區塊 */
+.right-section{border:1px solid #e0ddd6;border-radius:6px;margin:8px;overflow:hidden}
+.right-section-header{
+  padding:9px 12px;display:flex;align-items:center;gap:8px;cursor:pointer;
+  font-size:12px;font-weight:600;color:#fff;user-select:none;transition:filter .15s;
+}
+.right-section-header:hover{filter:brightness(.95)}
+.rsh-icon{font-size:17px}
+.rsh-title{flex:1}
+.rsh-badge{font-size:12px;background:rgba(255,255,255,.2);padding:1px 7px;border-radius:10px}
+.toggle-icon{margin-left:auto;font-size:14px;transition:transform .25s}
+.toggle-icon.collapsed{transform:rotate(-90deg)}
+.right-section-content{padding:12px 14px;font-size:13px;color:var(--text2);overflow:hidden;transition:max-height .25s,padding .25s}
+.right-section-content.collapsed{max-height:0!important;padding-top:0;padding-bottom:0;overflow:hidden}
+
+/* 進度相關 */
+.rp-track{height:4px;background:var(--bg4);border-radius:2px;margin:6px 0 10px}
+.rp-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s}
+.rp-stat{display:flex;justify-content:space-between;margin-bottom:4px;font-size:13px}
+.rp-stat-val{font-weight:700;color:var(--navy)}
+.rp-row{display:flex;align-items:center;gap:5px;margin-bottom:4px;cursor:pointer}
+.rp-row:hover span{color:var(--navy)}
+.rp-dot{width:6px;height:6px;border-radius:50%;flex-shrink:0}
+.rp-pct{font-size:12px;color:var(--text4);margin-left:auto}
+/* 相關文章 */
+.rp-art{padding:6px 0;border-bottom:1px solid #f0ede6;cursor:pointer}
+.rp-art:last-child{border:none}
+.rp-art:hover .rp-art-title{color:var(--navy)}
+.rp-art-code{font-size:12px;font-family:monospace;font-weight:700;margin-bottom:2px}
+.rp-art-title{font-size:13px;color:var(--text2);line-height:1.5}
+/* 說明 */
+.rp-tip{font-size:13px;color:var(--text3);line-height:1.75;background:var(--bg3);padding:8px 10px;border-radius:5px}
+
+/* ── 首頁 ── */
+.home-wrap{padding:28px 32px 60px;max-width:100%;overflow-x:hidden}
+.welcome-message{
+  background:#fff;border:1px solid var(--bg4);border-radius:10px;
+  padding:28px 28px 24px;margin-bottom:16px;text-align:center;
+}
+.welcome-message h2{font-size:22px;font-weight:700;color:var(--navy);margin:14px 0 8px}
+.welcome-message p{font-size:13px;color:var(--text3);line-height:1.7}
+.home-icon{font-size:40px;display:block}
+.home-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+.hg-card{
+  background:#fff;border:1px solid var(--bg4);border-top:4px solid transparent;
+  border-radius:12px;padding:22px 20px 18px;cursor:pointer;transition:all .18s;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.hg-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.hg-code{font-size:22px;font-weight:700;margin-bottom:8px}
+.hg-name{font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:14px}
+.hg-foot{display:flex;justify-content:space-between}
+.hg-cnt{font-size:13px;color:var(--text4)}
+.hg-pct{font-size:13px;font-weight:700}
+.home-disclaimer{background:var(--navy);border-radius:8px;padding:14px 18px;color:rgba(255,255,255,.7);font-size:12px;line-height:1.85}
+.home-disclaimer strong{color:#fff}
+
+/* ── 文章頁 ── */
+.art-container{background:#fff;margin:24px auto;border-radius:14px;border:1px solid #e8e5de;padding:48px 56px 64px;max-width:720px;box-shadow:0 2px 8px rgba(0,0,0,.05)}
+.art-breadcrumb{display:flex;align-items:center;gap:6px;font-size:14px;color:var(--text4);margin-bottom:24px;flex-wrap:wrap}
+.art-breadcrumb a{color:var(--accent);cursor:pointer;text-decoration:none}
+.art-breadcrumb a:hover{text-decoration:underline}
+.art-breadcrumb span{color:var(--text4)}
+.art-back{display:inline-flex;align-items:center;gap:5px;font-size:14px;font-weight:600;color:var(--accent);cursor:pointer;padding:6px 14px;border-radius:8px;border:1px solid var(--accent);background:transparent;margin-bottom:16px;transition:all .15s}
+.art-back:hover{background:var(--accent);color:#fff}
+.art-badge{display:inline-flex;align-items:center;gap:4px;padding:5px 14px;border-radius:12px;font-size:13px;font-weight:700;margin-bottom:16px;border:1px solid transparent;letter-spacing:.3px}
+.art-h1{font-size:32px;font-weight:700;color:var(--navy);line-height:1.35;margin-bottom:20px}
+.art-meta{font-size:13px;color:var(--text4);display:flex;gap:8px;flex-wrap:wrap;align-items:center;margin-bottom:28px;padding-bottom:20px;border-bottom:1px solid var(--bg4)}
+.read-btn{margin-left:auto;padding:8px 18px;border-radius:12px;border:1px solid var(--bg4);font-size:14px;font-weight:600;cursor:pointer;background:var(--bg3);color:var(--text2);font-family:inherit;transition:all .15s;min-width:90px;text-align:center}
+.read-btn.done{background:var(--accent);border-color:var(--accent);color:#fff}
+.art-body h2{font-size:22px;font-weight:700;color:var(--navy);margin:40px 0 16px;padding-left:12px;border-left:4px solid var(--accent)}
+.art-body h2:first-child{margin-top:0}
+.art-body h3{font-size:18px;font-weight:700;color:var(--navy);margin:32px 0 12px}
+.art-body p{font-size:18px;line-height:1.85;color:#333;margin-bottom:20px;letter-spacing:0.5px}
+.art-body blockquote{margin:32px 0;padding:20px 24px;border-left:4px solid var(--accent);background:#faf7ef;border-radius:0 8px 8px 0}
+.art-body blockquote p{color:#6b5518;margin:0;font-size:17px;line-height:1.9;font-style:italic}
+.art-body b.kn{color:#a0331f;font-weight:700;background:rgba(192,57,43,.08);padding:2px 4px;border-radius:3px}
+.art-nav{display:flex;gap:10px;margin-top:48px;padding-top:24px;border-top:1px solid var(--bg4)}
+.anb{flex:1;padding:16px 18px;border-radius:10px;border:1px solid var(--bg4);background:var(--bg2);cursor:pointer;transition:all .15s;font-family:inherit}
+.anb:hover{border-color:var(--accent);background:#faf8f2;transform:translateY(-1px)}
+.anb.r{text-align:right}
+.anb-dir{font-size:12px;color:var(--text4);margin-bottom:4px}
+.anb-t{font-size:14px;color:var(--text2);font-weight:600;line-height:1.4}
+
+/* ── 搜尋 ── */
+.search-result-wrap{padding:8px 10px;max-width:100%;overflow-x:hidden}
+.sr-item{padding:16px 18px;margin-bottom:8px;border:1px solid var(--bg4);border-radius:10px;cursor:pointer;background:#fff}
+.sr-item:hover{background:var(--bg3)}
+.sr-code{font-size:13px;font-family:monospace;font-weight:700;margin-bottom:4px;color:var(--accent)}
+.sr-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px}
+.sr-snip{font-size:14px;color:#666;line-height:1.7;overflow-wrap:break-word;word-break:break-word}
+.sr-snip em{color:var(--navy);font-style:normal;font-weight:600}
+.no-result{padding:60px;text-align:center;color:var(--text4);font-size:15px}
+
+/* ── 底部 ── */
+.bottombar{
+  display:flex;align-items:center;padding:10px 12px;min-height:62px;
+  padding-bottom:calc(10px + env(safe-area-inset-bottom,0px));
+  background:#fff;border-top:1px solid var(--bg4);flex-shrink:0;gap:8px;z-index:50;
+  overflow:hidden;position:sticky;bottom:0;
+}
+.bot-action{
+  width:34px;height:34px;border-radius:50%;border:none;cursor:pointer;
+  display:flex;align-items:center;justify-content:center;flex-shrink:0;
+  transition:all .15s;font-size:16px;
+}
+.bot-action:active{transform:scale(.92)}
+.bot-action.menu{background:#e8f5e9;color:#2e7d32}
+.bot-action.menu:hover{background:#c8e6c9}
+.bot-action.refresh{background:#e3f2fd;color:#1565c0}
+.bot-action.refresh:hover{background:#bbdefb}
+.bot-ver{font-size:10px;color:#fff;background:var(--accent);padding:2px 8px;border-radius:10px;font-weight:700;flex-shrink:0;letter-spacing:.5px}
+.bot-input-wrap{
+  flex:1;min-width:0;display:flex;align-items:center;
+  background:#f5f5f5;border:1.5px solid #e0e0e0;border-radius:24px;
+  padding:0 6px 0 18px;transition:all .2s;height:42px;
+}
+.bot-input-wrap:focus-within{border-color:var(--accent);background:#fff;box-shadow:0 0 0 3px rgba(184,145,42,.1)}
+.bot-input{
+  flex:1;min-width:0;background:transparent;border:none;
+  font-family:inherit;font-size:16px;color:var(--text);outline:none;
+  padding:0;height:100%;
+}
+.bot-input::placeholder{color:#aaa;font-size:16px}
+.bot-go{
+  width:32px;height:32px;border-radius:50%;border:none;
+  background:var(--navy);color:#fff;cursor:pointer;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  transition:all .15s;margin-left:2px;
+}
+.bot-go:hover{background:var(--accent)}
+.bot-go:active{transform:scale(.92)}
+.bot-go.ready{background:var(--accent)}
+
+/* ── 新聞 ── */
+.news-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;margin-bottom:28px}
+.news-card{
+  background:#fff;border:1px solid var(--bg4);border-top:4px solid transparent;
+  border-radius:12px;padding:22px 20px 18px;cursor:pointer;transition:all .18s;
+  box-shadow:0 1px 4px rgba(0,0,0,.05);
+}
+.news-card:hover{transform:translateY(-4px);box-shadow:0 8px 24px rgba(0,0,0,.12)}
+.news-card-icon{font-size:28px;margin-bottom:8px}
+.news-card-name{font-size:15px;color:var(--text2);line-height:1.6;margin-bottom:10px;font-weight:600}
+.news-card-cnt{font-size:13px;color:var(--text4)}
+.news-item{
+  padding:16px 18px;margin-bottom:10px;background:#fff;border:1px solid var(--bg4);
+  border-left:4px solid transparent;border-radius:10px;cursor:pointer;transition:all .15s;
+}
+.news-item:hover{border-left-color:var(--accent);background:#faf8f2}
+.news-item-date{font-size:12px;color:var(--text4);margin-bottom:4px}
+.news-item-title{font-size:16px;font-weight:600;color:var(--text);margin-bottom:6px;line-height:1.5}
+.news-item-summary{font-size:14px;color:var(--text3);line-height:1.7;margin-bottom:6px}
+.news-item-source{font-size:12px;color:var(--accent);font-weight:600}
+.news-item-tags{display:flex;gap:6px;flex-wrap:wrap;margin-top:8px}
+.news-tag{font-size:11px;padding:2px 8px;border-radius:10px;background:#f0ede6;color:var(--text3)}
+@media(max-width:660px){
+  .news-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .news-card{padding:16px 14px 14px}
+  .news-card-name{font-size:13px}
+}
+
+/* ── 版權 ── */
+.footer{height:36px;background:#fff;border-top:1px solid var(--bg4);display:flex;align-items:center;justify-content:center;font-size:13px;color:var(--text4);flex-shrink:0}
+
+/* ── 手機 ── */
+@media(max-width:960px){.right-panel{display:none}}
+@media(max-width:660px){
+  :root{--sidebar-w:0px}
+  .sidebar{position:fixed;top:0;left:0;bottom:0;width:82vw;max-width:280px;z-index:200;transform:translateX(-100%);transition:transform .25s cubic-bezier(.4,0,.2,1);border-right:none;flex:0 0 0px!important;min-width:0!important}
+  .sidebar.mobile-open{transform:translateX(0)}
+  .mobile-overlay.show{display:block}
+  .mobile-menu-btn{display:flex!important}
+  .dot-row{display:none}
+  .header{overflow:hidden;max-width:100vw;width:100%}
+  .tabs{min-width:0;flex:1 1 0;overflow-x:auto;max-width:calc(100vw - 100px)}
+  .tab{padding:10px 12px;font-size:14px;flex-shrink:0}
+  /* 副標列：手機版兩行排列 */
+  .subtitle{padding:8px 16px;min-height:auto;flex-direction:column;align-items:flex-start;gap:2px;overflow:hidden;width:100%}
+  .subtitle .title{font-size:14px;white-space:normal!important;overflow:hidden;text-overflow:ellipsis;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;width:100%}
+  .subtitle .meta{margin-left:0;font-size:12px;white-space:normal!important;flex-shrink:1!important;width:100%;overflow:hidden}
+  /* 首頁 */
+  .home-wrap{padding:16px 14px 80px}
+  .home-grid{grid-template-columns:1fr 1fr;gap:12px}
+  .hg-card{padding:16px 14px 14px;min-height:110px;display:flex;flex-direction:column}
+  .hg-code{font-size:18px;margin-bottom:6px}
+  .hg-name{font-size:13px;line-height:1.45;margin-bottom:auto}
+  .hg-foot{padding-top:8px}
+  .hg-cnt{font-size:12px}
+  .hg-pct{font-size:12px}
+  /* 搜尋結果 */
+  .sr-item{padding:14px 16px}
+  .sr-title{font-size:15px}
+  .sr-snip{font-size:13px}
+  /* 文章頁 */
+  .art-container{margin:10px 8px;padding:24px 20px 44px;border-radius:12px;box-shadow:0 1px 4px rgba(0,0,0,.06);border:1px solid #e8e5de}
+  .art-h1{font-size:24px;line-height:1.4;margin-bottom:14px}
+  .art-body p{font-size:17px;line-height:1.9;letter-spacing:0.4px}
+  .art-body h2{font-size:20px;margin:32px 0 14px}
+  .art-body h3{font-size:17px;margin:24px 0 10px}
+  .art-body blockquote{margin:24px 0;padding:16px 18px}
+  .read-btn{padding:8px 18px;font-size:14px}
+  .anb{padding:14px 16px;min-height:48px}
+  .art-nav{flex-direction:column}
+  .footer{display:none}
+}
+</style>
+<script src="https://cdn.jsdelivr.net/npm/marked@12.0.2/marked.min.js"></script>
+</head>
+<body>
+
+<!-- Header -->
+<div class="header">
+  <div class="dot-row">
+    <div class="dot dot-r"></div>
+    <div class="dot dot-y"></div>
+    <div class="dot dot-g"></div>
+    <div class="dot dot-b"></div>
+  </div>
+  <div class="mobile-menu-btn" onclick="toggleMobileSidebar()">
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="#666">
+      <rect y="3" width="18" height="2" rx="1"/>
+      <rect y="8" width="18" height="2" rx="1"/>
+      <rect y="13" width="18" height="2" rx="1"/>
+    </svg>
+  </div>
+  <div class="tabs" id="tabsEl">
+    <div class="tab active" data-t="home" onclick="switchTab('home')">知識庫</div>
+    <div class="tab" data-t="news" onclick="showNewsHome()">新聞報導</div>
+    <div class="tab" data-t="article" id="artTabEl" style="display:none" onclick="switchTab('article')">閱讀中</div>
+    <div class="tab" data-t="search" id="srTabEl" style="display:none" onclick="switchTab('search')">搜尋結果</div>
+  </div>
+  <div class="btn-home" onclick="switchTab('home')" title="回首頁">🏠</div>
+</div>
+
+<!-- 副標列 -->
+<div class="subtitle">
+  <span class="title" id="subTitle">保險財富傳承知識庫</span>
+  <span class="meta">
+    Rex大叔 CFP · 許峰源法羽老師 · 共 <span id="totalCount">0</span> 篇 ／
+    <span class="subtitle-progress" id="subProg">已讀 0 / 0</span>
+  </span>
+</div>
+
+<!-- 三欄 -->
+<div class="main">
+
+  <!-- 手機遮罩 -->
+  <div class="mobile-overlay" id="mobile-overlay" onclick="toggleMobileSidebar()"></div>
+
+  <!-- Sidebar -->
+  <div class="sidebar" id="sidebar">
+    <div id="sidebar-content"></div>
+    <div class="sb-section">
+      <div class="sb-label">最近閱讀</div>
+      <div class="sb-recent" id="recent-list">尚未開始閱讀</div>
+    </div>
+    <div class="sb-user">
+      <div class="sb-avatar">R</div>
+      <div>
+        <div style="font-size:14px;font-weight:600">Rex大叔</div>
+        <div style="font-size:13px;color:var(--text4)">CFP · 保險財富傳承知識庫</div>
+      </div>
+    </div>
+  </div>
+
+  <!-- 中間內容 -->
+  <div class="content-area" id="contentArea">
+    <div id="homeView"></div>
+    <div id="seriesView" style="display:none"></div>
+    <div id="articleView" style="display:none"></div>
+    <div id="searchView" style="display:none"></div>
+    <div id="newsView" style="display:none"></div>
+    <div id="newsCatView" style="display:none"></div>
+  </div>
+
+  <!-- 右側 -->
+  <div class="right-panel">
+
+    <!-- 閱讀進度 -->
+    <div class="right-section" style="border-color:#1976d2">
+      <div class="right-section-header" style="background:linear-gradient(135deg,#1976d2,#0d47a1)" onclick="toggleRS('prog')">
+        <span class="rsh-icon">📊</span>
+        <span class="rsh-title">閱讀進度</span>
+        <span class="toggle-icon" id="ic-prog">▾</span>
+      </div>
+      <div class="right-section-content" id="rs-prog">
+        <div class="rp-stat"><span>已完成</span><span class="rp-stat-val" id="rpNum">0 / 0 篇</span></div>
+        <div class="rp-track"><div class="rp-fill" id="rpFill" style="width:0%"></div></div>
+        <div id="rpSeriesList"></div>
+      </div>
+    </div>
+
+    <!-- 同系列篇章 -->
+    <div class="right-section" id="rpRelSec" style="border-color:#9c27b0;display:none">
+      <div class="right-section-header" style="background:linear-gradient(135deg,#9c27b0,#7b1fa2)" onclick="toggleRS('rel')">
+        <span class="rsh-icon">📑</span>
+        <span class="rsh-title">同系列篇章</span>
+        <span class="toggle-icon" id="ic-rel">▾</span>
+      </div>
+      <div class="right-section-content" id="rs-rel"></div>
+    </div>
+
+    <!-- 使用說明 -->
+    <div class="right-section" style="border-color:#4caf50">
+      <div class="right-section-header" style="background:linear-gradient(135deg,#4caf50,#2e7d32)" onclick="toggleRS('tip')">
+        <span class="rsh-icon">💡</span>
+        <span class="rsh-title">使用說明</span>
+        <span class="toggle-icon" id="ic-tip">▾</span>
+      </div>
+      <div class="right-section-content" id="rs-tip">
+        <div class="rp-tip">左側依系列分組，點篇名閱讀。讀完後按「標記已讀」追蹤進度。底部可全文搜尋 <span id="tipCount">0</span> 篇內容。進度儲存在瀏覽器，不會消失。</div>
+      </div>
+    </div>
+
+    <!-- 知識庫資訊 -->
+    <div class="right-section" style="border-color:#ff9800">
+      <div class="right-section-header" style="background:linear-gradient(135deg,#ff9800,#e65100)" onclick="toggleRS('info')">
+        <span class="rsh-icon">ℹ️</span>
+        <span class="rsh-title">知識庫資訊</span>
+        <span class="toggle-icon collapsed" id="ic-info">▾</span>
+      </div>
+      <div class="right-section-content collapsed" id="rs-info">
+        <div class="rp-tip">整理者：Rex景彬 CFP<br>資料來源：許峰源法羽律師課程<br>涵蓋遺產稅、保險法律、民法繼承、特殊家庭情境等九大系列。<br><br><strong>僅供學習參考，不構成任何法律意見。</strong></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- 底部搜尋 -->
+<div class="bottombar">
+  <button class="bot-action" id="navBack" style="background:#f3e8ff;color:#7c3aed;opacity:0.3" onclick="navGo(-1)" title="上一步">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="15 18 9 12 15 6"/></svg>
+  </button>
+  <button class="bot-action" id="navFwd" style="background:#f3e8ff;color:#7c3aed;opacity:0.3" onclick="navGo(1)" title="下一步">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="9 18 15 12 9 6"/></svg>
+  </button>
+  <button class="bot-action menu" onclick="toggleMobileSidebar()" title="目錄">
+    <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M3 18h18v-2H3v2zm0-5h18v-2H3v2zm0-7v2h18V6H3z"/></svg>
+  </button>
+  <span class="bot-ver">v7</span>
+  <div class="bot-input-wrap">
+    <input class="bot-input" id="botInput" placeholder="搜尋篇名或關鍵字…"
+           oninput="onSI(this.value)" onkeydown="if(event.key==='Enter')doSearch()">
+    <button class="bot-go" id="botGo" onclick="doSearch()" title="搜尋">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2.5"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    </button>
+  </div>
+</div>
+
+<!-- 版權 -->
+<div class="footer">本系統由 Rex大叔 CFP 設計，主要資料來源為許峰源法羽老師讀書會資料整理筆記 ─ 僅供學習參考，不構成任何法律意見或保險購買建議</div>
+
+<script>
+const SERIES=[
+  {id:'A',name:'保險基礎觀念',color:'#27a882'},
+  {id:'B',name:'遺產稅計算與架構',color:'#2d7dd2'},
+  {id:'C',name:'實質課稅原則',color:'#c0392b'},
+  {id:'D',name:'民法繼承與遺囑',color:'#6c5ce7'},
+  {id:'E',name:'保單架構設計',color:'#b8912a'},
+  {id:'F',name:'保單法律風險與業務刑責',color:'#c0526a'},
+  {id:'G',name:'特殊家庭情境',color:'#2d8b3c'},
+  {id:'H',name:'實物抵繳與不動產傳承',color:'#777'},
+  {id:'I',name:'業務方法與心法',color:'#0d7d5f'},
+];
+const ARTS=[{"code":"A01","s":"A","sname":"保險基礎觀念","title":"保險與財富傳承基礎觀念篇","file":"A01_【A保險基礎觀念】保險與財富傳承基礎觀念篇.md"},{"code":"A02","s":"A","sname":"保險基礎觀念","title":"保險產品工具解析篇","file":"A02_【A保險基礎觀念】保險產品工具解析篇.md"},{"code":"A03","s":"A","sname":"保險基礎觀念","title":"家族財富高端工具概覽篇","file":"A03_【A保險基礎觀念】家族財富高端工具概覽篇.md"},{"code":"A04","s":"A","sname":"保險基礎觀念","title":"高額人壽保險業務心法篇","file":"A04_【A保險基礎觀念】高額人壽保險業務心法篇.md"},{"code":"A05","s":"A","sname":"保險基礎觀念","title":"高資產傳承策略實務篇","file":"A05_【A保險基礎觀念】高資產傳承策略實務篇.md"},{"code":"A06","s":"A","sname":"保險基礎觀念","title":"不要再講預留稅源了找回高額人壽保險專家的底氣篇","file":"A06_【A保險基礎觀念】不要再講預留稅源了找回高額人壽保險專家的底氣篇.md"},{"code":"A07","s":"A","sname":"保險基礎觀念","title":"雙保險的智慧聚焦繼承風險場景的業務突破篇","file":"A07_【A保險基礎觀念】雙保險的智慧聚焦繼承風險場景的業務突破篇.md"},{"code":"B01","s":"B","sname":"遺產稅計算與架構","title":"遺產稅與預留稅源規劃篇","file":"B01_【B遺產稅計算與架構】遺產稅與預留稅源規劃篇.md"},{"code":"B02","s":"B","sname":"遺產稅計算與架構","title":"遺產稅與民法雙軌計算核心篇","file":"B02_【B遺產稅計算與架構】遺產稅與民法雙軌計算核心篇.md"},{"code":"B03","s":"B","sname":"遺產稅計算與架構","title":"遺產稅所得稅贈與稅三稅分辨篇","file":"B03_【B遺產稅計算與架構】遺產稅所得稅贈與稅三稅分辨篇.md"},{"code":"B04","s":"B","sname":"遺產稅計算與架構","title":"所得基本稅額條例完整邏輯篇","file":"B04_【B遺產稅計算與架構】所得基本稅額條例完整邏輯篇.md"},{"code":"B05","s":"B","sname":"遺產稅計算與架構","title":"年金保險遺產稅完整邏輯篇","file":"B05_【B遺產稅計算與架構】年金保險遺產稅完整邏輯篇.md"},{"code":"B06","s":"B","sname":"遺產稅計算與架構","title":"死亡前兩年贈與配偶分單課稅新制篇","file":"B06_【B遺產稅計算與架構】死亡前兩年贈與配偶分單課稅新制篇.md"},{"code":"B07","s":"B","sname":"遺產稅計算與架構","title":"保證債務與未償債務扣除額篇","file":"B07_【B遺產稅計算與架構】保證債務與未償債務扣除額篇.md"},{"code":"B08","s":"B","sname":"遺產稅計算與架構","title":"境外資產與境外保單的遺產稅篇","file":"B08_【B遺產稅計算與架構】境外資產與境外保單的遺產稅篇.md"},{"code":"B09","s":"B","sname":"遺產稅計算與架構","title":"境外保單遺產稅判決實務案例篇","file":"B09_【B遺產稅計算與架構】境外保單遺產稅判決實務案例篇.md"},{"code":"B10","s":"B","sname":"遺產稅計算與架構","title":"境外居住遺產稅課徵範圍與扣除額限制篇","file":"B10_【B遺產稅計算與架構】境外居住遺產稅課徵範圍與扣除額限制篇.md"},{"code":"C01","s":"C","sname":"實質課稅原則","title":"保險實質課稅與法律爭議篇","file":"C01_【C實質課稅原則】保險實質課稅與法律爭議篇.md"},{"code":"C02","s":"C","sname":"實質課稅原則","title":"遺贈稅法第16條第9款完整解析篇","file":"C02_【C實質課稅原則】遺贈稅法第16條第9款完整解析篇.md"},{"code":"C03","s":"C","sname":"實質課稅原則","title":"實質課稅原則核課標的與快篩測試篇","file":"C03_【C實質課稅原則】實質課稅原則核課標的與快篩測試篇.md"},{"code":"C04","s":"C","sname":"實質課稅原則","title":"增額終身壽險增值回饋分享金課稅篇","file":"C04_【C實質課稅原則】增額終身壽險增值回饋分享金課稅篇.md"},{"code":"C05","s":"C","sname":"實質課稅原則","title":"保單違反實質課稅繳稅與領錢矛盾篇","file":"C05_【C實質課稅原則】保單違反實質課稅繳稅與領錢矛盾篇.md"},{"code":"D01","s":"D","sname":"民法繼承與遺囑","title":"民法繼承基礎架構篇","file":"D01_【D民法繼承與遺囑】民法繼承基礎架構篇.md"},{"code":"D02","s":"D","sname":"民法繼承與遺囑","title":"民法繼承全面複習與遺囑vs保險比較篇","file":"D02_【D民法繼承與遺囑】民法繼承全面複習與遺囑vs保險比較篇.md"},{"code":"D03","s":"D","sname":"民法繼承與遺囑","title":"繼承人有高額負債時的拋棄繼承時機篇","file":"D03_【D民法繼承與遺囑】繼承人有高額負債時的拋棄繼承時機篇.md"},{"code":"D04","s":"D","sname":"民法繼承與遺囑","title":"墊繳遺產稅的贈與稅陷阱與遺產分割篇","file":"D04_【D民法繼承與遺囑】墊繳遺產稅的贈與稅陷阱與遺產分割篇.md"},{"code":"D05","s":"D","sname":"民法繼承與遺囑","title":"保單在婚姻財產與繼承中的計算篇","file":"D05_【D民法繼承與遺囑】保單在婚姻財產與繼承中的計算篇.md"},{"code":"D06","s":"D","sname":"民法繼承與遺囑","title":"借名登記的繼承陷阱篇","file":"D06_【D民法繼承與遺囑】借名登記的繼承陷阱篇.md"},{"code":"D07","s":"D","sname":"民法繼承與遺囑","title":"遺囑實務操作完整指引篇","file":"D07_【D民法繼承與遺囑】遺囑實務操作完整指引篇.md"},{"code":"D08","s":"D","sname":"民法繼承與遺囑","title":"刪除兄弟姐妹特留分修法背景與三部曲篇","file":"D08_【D民法繼承與遺囑】刪除兄弟姐妹特留分修法背景與三部曲篇.md"},{"code":"D09","s":"D","sname":"民法繼承與遺囑","title":"生前遺產分割協議書的效力與條件篇","file":"D09_【D民法繼承與遺囑】生前遺產分割協議書的效力與條件篇.md"},{"code":"D10","s":"D","sname":"民法繼承與遺囑","title":"夫妻剩餘財產分配請求權實務操作細節篇","file":"D10_【D民法繼承與遺囑】夫妻剩餘財產分配請求權實務操作細節篇.md"},{"code":"D11","s":"D","sname":"民法繼承與遺囑","title":"孝順媳婦沒有繼承權的真實案例篇","file":"D11_【D民法繼承與遺囑】孝順媳婦沒有繼承權的真實案例篇.md"},{"code":"E01","s":"E","sname":"保單架構設計","title":"受益人指定的法律爭點與實務建議篇","file":"E01_【E保單架構設計】受益人指定的法律爭點與實務建議篇.md"},{"code":"E02","s":"E","sname":"保單架構設計","title":"保險商品結構辨別與贈與規劃篇","file":"E02_【E保單架構設計】保險商品結構辨別與贈與規劃篇.md"},{"code":"E03","s":"E","sname":"保單架構設計","title":"子父子規劃風險解析與父父子優勢篇","file":"E03_【E保單架構設計】子父子規劃風險解析與父父子優勢篇.md"},{"code":"E04","s":"E","sname":"保單架構設計","title":"三代保單優缺點與父父子比較篇","file":"E04_【E保單架構設計】三代保單優缺點與父父子比較篇.md"},{"code":"E05","s":"E","sname":"保單架構設計","title":"子父子子子父父父子三種規劃完整比較篇","file":"E05_【E保單架構設計】子父子子子父父父子三種規劃完整比較篇.md"},{"code":"E06","s":"E","sname":"保單架構設計","title":"三代保單法律稅務問題與借款解法篇","file":"E06_【E保單架構設計】三代保單法律稅務問題與借款解法篇.md"},{"code":"E07","s":"E","sname":"保單架構設計","title":"要保人先於被保險人死亡的保單處理篇","file":"E07_【E保單架構設計】要保人先於被保險人死亡的保單處理篇.md"},{"code":"E08","s":"E","sname":"保單架構設計","title":"猶豫期內被保險人死亡保險金歸屬篇","file":"E08_【E保單架構設計】猶豫期內被保險人死亡保險金歸屬篇.md"},{"code":"E09","s":"E","sname":"保單架構設計","title":"三方不同人保單課稅問題與法定繼承人時間點篇","file":"E09_【E保單架構設計】三方不同人保單課稅問題與法定繼承人時間點篇.md"},{"code":"F01","s":"F","sname":"保單法律風險與業務刑責","title":"保單強制執行修法後醫療險意外險保險金處理篇","file":"F01_【F保單法律風險與業務刑責】保單強制執行修法後醫療險意外險保險金處理篇.md"},{"code":"F02","s":"F","sname":"保單法律風險與業務刑責","title":"保單強制執行與變更要保人的刑民事責任篇","file":"F02_【F保單法律風險與業務刑責】保單強制執行與變更要保人的刑民事責任篇.md"},{"code":"F03","s":"F","sname":"保單法律風險與業務刑責","title":"離婚後保單的保險利益與變更要保人篇","file":"F03_【F保單法律風險與業務刑責】離婚後保單的保險利益與變更要保人篇.md"},{"code":"G01","s":"G","sname":"特殊家庭情境","title":"再婚家庭婚前財產與特留分規劃篇","file":"G01_【G特殊家庭情境】再婚家庭婚前財產與特留分規劃篇.md"},{"code":"G02","s":"G","sname":"特殊家庭情境","title":"外籍繼承人不動產限制與保險解方篇","file":"G02_【G特殊家庭情境】外籍繼承人不動產限制與保險解方篇.md"},{"code":"G03","s":"G","sname":"特殊家庭情境","title":"中國籍配偶繼承與夫妻剩餘財產分配篇","file":"G03_【G特殊家庭情境】中國籍配偶繼承與夫妻剩餘財產分配篇.md"},{"code":"G04","s":"G","sname":"特殊家庭情境","title":"頂客族傳承規劃完整策略篇","file":"G04_【G特殊家庭情境】頂客族傳承規劃完整策略篇.md"},{"code":"G05","s":"G","sname":"特殊家庭情境","title":"未成年子女特有財產與媳婦女婿風險篇","file":"G05_【G特殊家庭情境】未成年子女特有財產與媳婦女婿風險篇.md"},{"code":"G06","s":"G","sname":"特殊家庭情境","title":"監護宣告意定監護與保單晚年功能篇","file":"G06_【G特殊家庭情境】監護宣告意定監護與保單晚年功能篇.md"},{"code":"G07","s":"G","sname":"特殊家庭情境","title":"保險金信託保護離婚後未成年子女篇","file":"G07_【G特殊家庭情境】保險金信託保護離婚後未成年子女篇.md"},{"code":"G08","s":"G","sname":"特殊家庭情境","title":"信託規劃與意定監護篇","file":"G08_【G特殊家庭情境】信託規劃與意定監護篇.md"},{"code":"H01","s":"H","sname":"實物抵繳與不動產傳承","title":"不動產生前贈與vs繼承的稅務與人生決策篇","file":"H01_【H實物抵繳與不動產傳承】不動產生前贈與vs繼承的稅務與人生決策篇.md"},{"code":"H02","s":"H","sname":"實物抵繳與不動產傳承","title":"上市櫃股票實物抵繳遺產稅計算篇","file":"H02_【H實物抵繳與不動產傳承】上市櫃股票實物抵繳遺產稅計算篇.md"},{"code":"H03","s":"H","sname":"實物抵繳與不動產傳承","title":"土地實物抵繳遺產稅與土地增值稅篇","file":"H03_【H實物抵繳與不動產傳承】土地實物抵繳遺產稅與土地增值稅篇.md"},{"code":"I01","s":"I","sname":"業務方法與心法","title":"高資產人脈潛規則篇","file":"I01_【I業務方法與心法】高資產人脈潛規則篇.md"},{"code":"I02","s":"I","sname":"業務方法與心法","title":"生命故事與心念轉化篇","file":"I02_【I業務方法與心法】生命故事與心念轉化篇.md"},{"code":"I03","s":"I","sname":"業務方法與心法","title":"醫師族群市場開發篇","file":"I03_【I業務方法與心法】醫師族群市場開發篇.md"},{"code":"I04","s":"I","sname":"業務方法與心法","title":"銷售流程與反對問題處理篇","file":"I04_【I業務方法與心法】銷售流程與反對問題處理篇.md"}];
+const ICONS={A:'📋',B:'🏦',C:'⚖️',D:'👨‍👩‍👧',E:'📄',F:'🔒',G:'🏠',H:'🏗️',I:'💼'};
+
+let cur=null,collapsed=new Set(),curTab='home';
+/* Navigation history */
+let navHistory=[],navPos=-1,navLock=false;
+function navPush(state){
+  if(navLock)return;
+  if(navPos<navHistory.length-1)navHistory=navHistory.slice(0,navPos+1);
+  navHistory.push(state);
+  navPos=navHistory.length-1;
+  updateNavBtns();
+}
+function navGo(dir){
+  var np=navPos+dir;
+  if(np<0||np>=navHistory.length)return;
+  navPos=np;navLock=true;
+  var s=navHistory[navPos];
+  if(s.type==='home')switchTab('home');
+  else if(s.type==='series')showSeries(s.id);
+  else if(s.type==='article')openArt(s.code);
+  else if(s.type==='search'){document.getElementById('botInput').value=s.q;doSearch();}
+  else if(s.type==='news')showNewsHome();
+  else if(s.type==='newsCat')showNewsCat(s.id);
+  navLock=false;
+  updateNavBtns();
+}
+function updateNavBtns(){
+  var b=document.getElementById('navBack'),f=document.getElementById('navFwd');
+  if(b)b.style.opacity=navPos>0?'1':'0.3';
+  if(f)f.style.opacity=navPos<navHistory.length-1?'1':'0.3';
+}
+let readSet=new Set(JSON.parse(localStorage.getItem('rex_ins3')||'[]'));
+let recentList=JSON.parse(localStorage.getItem('rex_ins3_recent')||'[]');
+const sc=id=>(SERIES.find(x=>x.id===id)||{color:'#888'}).color;
+const sn=id=>(SERIES.find(x=>x.id===id)||{name:id}).name;
+const rsCollapsed=new Set();
+
+/* Tab 切換 */
+function switchTab(t){
+  curTab=t;
+  ['homeView','seriesView','articleView','searchView','newsView','newsCatView'].forEach(id=>document.getElementById(id).style.display=id===t+'View'?'block':'none');
+  document.querySelectorAll('.tab').forEach(b=>b.classList.toggle('active',b.dataset.t===t));
+  document.getElementById('contentArea').scrollTop=0;
+  if(t==='home'){navPush({type:'home'});document.getElementById('subTitle').textContent='保險財富傳承知識庫';}
+  updateRightRelated();
+}
+
+
+/* 系列文章清單 */
+function showSeries(sid){
+  const s=SERIES.find(x=>x.id===sid);
+  const arts=ARTS.filter(a=>a.s===sid);
+  const color=sc(sid);
+  document.getElementById('subTitle').textContent=s.name;
+  let rows='';
+  arts.forEach(function(a){
+    const done=readSet.has(a.code);
+    rows+='<div onclick="openArt(\''+a.code+'\')" style="cursor:pointer;background:#fff;border-radius:10px;border:1px solid #eee;border-left:4px solid '+color+';padding:14px 16px;margin-bottom:10px">'+
+      '<div style="display:flex;justify-content:space-between;align-items:center">'+
+      '<span style="font-size:14px;font-weight:600;color:'+color+'">'+a.code+'</span>'+
+      (done?'<span style="font-size:13px;color:#4caf50">✓ 已讀</span>':'')+
+      '</div>'+
+      '<div style="font-size:16px;font-weight:600;color:#333;margin-top:4px">'+a.title+'</div>'+
+      '</div>';
+  });
+  document.getElementById('seriesView').innerHTML=
+    '<div class="home-wrap">'+
+    '<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">'+
+    '<span style="font-size:28px">'+( ICONS[sid]||'📋')+'</span>'+
+    '<div><div style="font-size:20px;font-weight:700;color:'+color+'">'+s.name+'</div>'+
+    '<div style="font-size:15px;color:#888">共 '+arts.length+' 篇</div></div></div>'+
+    '<div>'+rows+'</div>'+
+    '<div style="margin-top:16px"><span onclick="switchTab(\'home\')" style="cursor:pointer;font-size:13px;color:#888">← 返回首頁</span></div>'+
+    '</div>';
+  navPush({type:'series',id:sid});
+  switchTab('series');
+}
+
+/* Sidebar 建立 */
+function buildSidebar(){
+  const el=document.getElementById('sidebar-content');
+  el.innerHTML='';
+  SERIES.forEach(s=>{
+    const arts=ARTS.filter(a=>a.s===s.id);
+    const open=!collapsed.has(s.id);
+    const uid='sg-'+s.id;
+    const wrap=document.createElement('div');
+    wrap.className='sb-section';
+    wrap.innerHTML=`
+      <div class="sb-label" onclick="toggleSG('${s.id}')">
+        <span style="color:${s.color}">${ICONS[s.id]||'·'} ${s.name}</span>
+        <span class="sb-label-arr ${open?'open':''}" id="sla-${s.id}">▶</span>
+      </div>
+      <div class="sb-group-body ${open?'':'closed'}" id="${uid}">
+        ${arts.map(a=>`
+          <div class="sb-item ${readSet.has(a.code)?'read':''} ${cur===a.code?'active':''}"
+               onclick="openArt('${a.code}')">
+            <span class="sb-item-ico" style="color:${sc(a.s)}">${a.code}</span>
+            <span>${a.title.replace('篇','')}</span>
+          </div>`).join('')}
+      </div>`;
+    el.appendChild(wrap);
+  });
+  // 最近閱讀
+  const rl=document.getElementById('recent-list');
+  rl.innerHTML=recentList.length
+    ? recentList.slice(0,3).map(code=>{
+        const a=ARTS.find(x=>x.code===code);
+        return a?`<div style="cursor:pointer;margin-bottom:3px;color:#555" onclick="openArt('${code}')">${code} ${a.title.slice(0,12)}…</div>`:'';
+      }).join('')
+    : '尚未開始閱讀';
+}
+function toggleSG(sid){
+  if(collapsed.has(sid)) collapsed.delete(sid); else collapsed.add(sid);
+  document.getElementById('sg-'+sid)?.classList.toggle('closed',collapsed.has(sid));
+  const arr=document.getElementById('sla-'+sid);
+  if(arr) arr.classList.toggle('open',!collapsed.has(sid));
+}
+
+/* 右側折疊 */
+function toggleRS(id){
+  const body=document.getElementById('rs-'+id);
+  const ic=document.getElementById('ic-'+id);
+  body.classList.toggle('collapsed');
+  if(ic) ic.classList.toggle('collapsed',body.classList.contains('collapsed'));
+}
+
+/* 進度 */
+function updateProgress(){
+  const n=readSet.size;
+  const total=ARTS.length;
+  document.getElementById('subProg').textContent=`已讀 ${n} / ${total}`;
+  document.getElementById('rpNum').textContent=`${n} / ${total} 篇`;
+  const totalEl=document.getElementById('totalCount');
+  if(totalEl) totalEl.textContent=total;
+  const tipEl=document.getElementById('tipCount');
+  if(tipEl) tipEl.textContent=total;
+  document.getElementById('rpFill').style.width=total?Math.round(n/total*100)+'%':'0%';
+  document.getElementById('rpSeriesList').innerHTML=SERIES.map(s=>{
+    const total_s=ARTS.filter(a=>a.s===s.id).length;
+    const done=ARTS.filter(a=>a.s===s.id&&readSet.has(a.code)).length;
+    const pct=total_s?Math.round(done/total_s*100):0;
+    return `<div class="rp-row">
+      <div class="rp-dot" style="background:${s.color}"></div>
+      <span style="font-size:13px;color:#555">${s.name}</span>
+      <span class="rp-pct" style="color:${pct?s.color:'var(--text4)'}">${pct?pct+'%':'—'}</span>
+    </div>`;
+  }).join('');
+}
+
+/* 右側相關篇章 */
+function updateRightRelated(){
+  const sec=document.getElementById('rpRelSec');
+  if(!cur){sec.style.display='none';return;}
+  const a=ARTS.find(x=>x.code===cur);
+  const related=ARTS.filter(x=>x.s===a.s&&x.code!==cur).slice(0,6);
+  if(!related.length){sec.style.display='none';return;}
+  sec.style.display='';
+  document.getElementById('rs-rel').innerHTML=related.map(r=>`
+    <div class="rp-art" onclick="openArt('${r.code}')">
+      <div class="rp-art-code" style="color:${sc(r.s)}">${r.code}</div>
+      <div class="rp-art-title">${r.title}</div>
+    </div>`).join('');
+}
+
+/* 開啟文章 */
+/* MD 內容快取：{code: {md, html}} */
+const MDCACHE={};
+async function loadMd(code){
+  if(MDCACHE[code]) return MDCACHE[code];
+  const a=ARTS.find(x=>x.code===code);
+  if(!a) throw new Error('article not found: '+code);
+  const res=await fetch('data/articles/'+encodeURIComponent(a.file));
+  if(!res.ok) throw new Error('fetch '+res.status+': '+a.file);
+  const md=await res.text();
+  const html=marked.parse(md,{breaks:false,gfm:true});
+  MDCACHE[code]={md,html};
+  return MDCACHE[code];
+}
+async function ensureAllMdLoaded(onProgress){
+  const missing=ARTS.filter(a=>!MDCACHE[a.code]);
+  if(!missing.length) return;
+  let done=0;
+  await Promise.all(missing.map(async a=>{
+    try{ await loadMd(a.code); }catch(e){ console.warn('load fail',a.code,e); }
+    done++; if(onProgress) onProgress(done,missing.length);
+  }));
+}
+async function openArt(code){
+  cur=code;
+  const a=ARTS.find(x=>x.code===code);
+  if(!a) return;
+  const color=sc(a.s);
+  const idx=ARTS.findIndex(x=>x.code===code);
+  const prev=idx>0?ARTS[idx-1]:null;
+  const next=idx<ARTS.length-1?ARTS[idx+1]:null;
+  recentList=recentList.filter(c=>c!==code);
+  recentList.unshift(code);
+  recentList=recentList.slice(0,5);
+  localStorage.setItem('rex_ins3_recent',JSON.stringify(recentList));
+  document.getElementById('artTabEl').style.display='';
+  document.getElementById('subTitle').textContent=a.title;
+  document.getElementById('articleView').innerHTML=`
+    <div class="art-container">
+      <div class="art-breadcrumb">
+        <a onclick="switchTab('home')">🏠 首頁</a>
+        <span>›</span>
+        <a onclick="showSeries('${a.s}')">${ICONS[a.s]||''} ${a.sname}</a>
+        <span>›</span>
+        <span>${a.code} ${a.title}</span>
+      </div>
+      <div class="art-badge" style="background:${color}15;color:${color};border-color:${color}30">
+        ${ICONS[a.s]||''} ${a.s} · ${a.sname}
+      </div>
+      <div class="art-h1">${a.title}</div>
+      <div class="art-meta">
+        <button class="read-btn ${readSet.has(code)?'done':''}" id="readBtn" onclick="toggleRead('${code}')">
+          ${readSet.has(code)?'✓ 已讀':'標記已讀'}
+        </button>
+      </div>
+      <div class="art-body" id="artBody" style="min-height:120px;color:#888">載入中…</div>
+      <div style="text-align:center;margin:20px 0 8px">
+        <span class="art-back" onclick="showSeries('${a.s}')">↩ 回 ${a.sname} 系列</span>
+      </div>
+      <div class="art-nav">
+        ${prev?`<div class="anb" onclick="openArt('${prev.code}')"><div class="anb-dir">← 上一篇</div><div class="anb-t">${prev.code} ${prev.title}</div></div>`:'<div></div>'}
+        ${next?`<div class="anb r" onclick="openArt('${next.code}')"><div class="anb-dir">下一篇 →</div><div class="anb-t">${next.code} ${next.title}</div></div>`:'<div></div>'}
+      </div>
+    </div>`;
+  navPush({type:'article',code:code});
+  switchTab('article');
+  buildSidebar();
+  closeMobileSidebar();
+  try{
+    const {html}=await loadMd(code);
+    const bodyEl=document.getElementById('artBody');
+    if(bodyEl&&cur===code){
+      bodyEl.style.color='';
+      bodyEl.innerHTML=html;
+    }
+  }catch(e){
+    const bodyEl=document.getElementById('artBody');
+    if(bodyEl&&cur===code){
+      bodyEl.style.color='#c0392b';
+      bodyEl.innerHTML='<p>載入失敗：'+e.message+'</p>';
+    }
+  }
+}
+
+/* 已讀 */
+function toggleRead(code){
+  if(readSet.has(code)) readSet.delete(code); else readSet.add(code);
+  localStorage.setItem('rex_ins3',JSON.stringify([...readSet]));
+  updateProgress(); buildSidebar();
+  const btn=document.getElementById('readBtn');
+  if(btn){btn.textContent=readSet.has(code)?'✓ 已讀':'標記已讀';btn.className='read-btn'+(readSet.has(code)?' done':'');}
+}
+
+/* 搜尋 */
+function onSI(v){document.getElementById('botGo').classList.toggle('ready',v.trim().length>0)}
+async function doSearch(){
+  document.getElementById('botInput').blur();
+  const q=document.getElementById('botInput').value.trim().toLowerCase();
+  if(!q) return;
+  const sv=document.getElementById('searchView');
+  document.getElementById('subTitle').textContent='搜尋：'+q;
+  document.getElementById('srTabEl').style.display='';
+  // 顯示載入指示
+  sv.innerHTML='<div class="no-result">載入全文中…<span id="searchProg"></span></div>';
+  navPush({type:'search',q:q});
+  switchTab('search');
+  await ensureAllMdLoaded((d,t)=>{
+    const el=document.getElementById('searchProg');
+    if(el) el.textContent=' ('+d+'/'+t+')';
+  });
+  const res=ARTS.filter(a=>{
+    const md=(MDCACHE[a.code]?.md||'').toLowerCase();
+    return a.title.toLowerCase().includes(q)||a.code.toLowerCase().includes(q)||sn(a.s).toLowerCase().includes(q)||md.includes(q);
+  });
+  if(!res.length){sv.innerHTML='<div class="no-result">沒有找到「'+q+'」的相關內容</div>';return;}
+  sv.innerHTML='<div class="search-result-wrap">'+res.map(a=>{
+    const plain=(MDCACHE[a.code]?.md||'').replace(/[#>*`_\-]/g,'');
+    const idx=plain.toLowerCase().indexOf(q);
+    let snip='';
+    if(idx>=0){
+      const s=Math.max(0,idx-20),e=Math.min(plain.length,idx+q.length+50);
+      snip=plain.slice(s,e).replace(new RegExp(q,'gi'),m=>`<em>${m}</em>`);
+      if(s>0)snip='…'+snip;if(e<plain.length)snip+='…';
+    }
+    return `<div class="sr-item" onclick="openArt('${a.code}')">
+      <div class="sr-code" style="color:${sc(a.s)}">${a.code}</div>
+      <div class="sr-title">${a.title}</div>
+      ${snip?`<div class="sr-snip">${snip}</div>`:''}
+    </div>`;
+  }).join('')+'</div>';
+}
+
+/* 首頁 */
+function buildHome(){
+  document.getElementById('homeView').innerHTML=`
+    <div class="home-wrap">
+
+      <div class="home-grid">
+        ${SERIES.map(s=>{
+          const total=ARTS.filter(a=>a.s===s.id).length;
+          const done=ARTS.filter(a=>a.s===s.id&&readSet.has(a.code)).length;
+          const pct=Math.round(done/total*100);
+          return `<div class="hg-card" style="border-top-color:${s.color}"
+                       onclick="showSeries('${s.id}')">
+            <div class="hg-code" style="color:${s.color}">${ICONS[s.id]} ${s.id}</div>
+            <div class="hg-name">${s.name}</div>
+            <div class="hg-foot">
+              <span class="hg-cnt">${total} 篇</span>
+              <span class="hg-pct" style="color:${pct?s.color:'var(--text4)'}">${pct?pct+'%':'未開始'}</span>
+            </div>
+          </div>`;
+        }).join('')}
+      </div>
+
+    </div>`;
+}
+
+/* 手機 Sidebar */
+function toggleMobileSidebar(){
+  document.getElementById('sidebar').classList.toggle('mobile-open');
+  document.getElementById('mobile-overlay').classList.toggle('show');
+}
+function closeMobileSidebar(){
+  document.getElementById('sidebar').classList.remove('mobile-open');
+  document.getElementById('mobile-overlay').classList.remove('show');
+}
+
+/* 新聞模組 */
+var newsData=null;
+function loadNews(){
+  if(newsData)return Promise.resolve(newsData);
+  return fetch('data/news.json').then(r=>r.json()).then(d=>{newsData=d;return d});
+}
+function showNewsHome(){
+  loadNews().then(function(d){
+    var cats=d.categories;
+    var arts=d.articles;
+    document.getElementById('subTitle').textContent='稅務新聞報導';
+    document.getElementById('newsView').innerHTML=
+      '<div class="home-wrap">'+
+      '<div style="margin-bottom:18px">'+
+      '<div style="font-size:20px;font-weight:700;color:var(--navy);margin-bottom:4px">📰 稅務新聞報導</div>'+
+      '<div style="font-size:14px;color:var(--text3)">精選各類稅務、保險、財經新聞重點摘要</div>'+
+      '</div>'+
+      '<div class="news-grid">'+
+      cats.map(function(c){
+        var cnt=arts.filter(function(a){return a.cat===c.id}).length;
+        return '<div class="news-card" style="border-top-color:'+c.color+'" onclick="showNewsCat(\''+c.id+'\')">'+
+          '<div class="news-card-icon">'+c.icon+'</div>'+
+          '<div class="news-card-name" style="color:'+c.color+'">'+c.name+'</div>'+
+          '<div class="news-card-cnt">'+cnt+' 篇報導</div>'+
+          '</div>';
+      }).join('')+
+      '</div></div>';
+    navPush({type:'news'});
+    switchTab('news');
+  });
+}
+function showNewsCat(catId){
+  loadNews().then(function(d){
+    var cat=d.categories.find(function(c){return c.id===catId});
+    var arts=d.articles.filter(function(a){return a.cat===catId}).sort(function(a,b){return b.date.localeCompare(a.date)});
+    document.getElementById('subTitle').textContent=cat.icon+' '+cat.name;
+    document.getElementById('newsCatView').innerHTML=
+      '<div class="home-wrap">'+
+      '<div style="display:flex;align-items:center;gap:10px;margin-bottom:18px">'+
+      '<span style="font-size:28px">'+cat.icon+'</span>'+
+      '<div><div style="font-size:20px;font-weight:700;color:'+cat.color+'">'+cat.name+'</div>'+
+      '<div style="font-size:14px;color:var(--text3)">共 '+arts.length+' 篇報導</div></div></div>'+
+      (arts.length?arts.map(function(a){
+        return '<div class="news-item" style="border-left-color:'+cat.color+'" onclick="window.open(\''+a.url+'\',\'_blank\')">'+
+          '<div class="news-item-date">'+a.date+' · '+a.source+'</div>'+
+          '<div class="news-item-title">'+a.title+'</div>'+
+          '<div class="news-item-summary">'+a.summary+'</div>'+
+          (a.tags?'<div class="news-item-tags">'+a.tags.map(function(t){return '<span class="news-tag">#'+t+'</span>'}).join('')+'</div>':'')+
+          '</div>';
+      }).join(''):'<div style="padding:40px;text-align:center;color:var(--text4)">此分類尚無新聞</div>')+
+      '<div style="margin-top:16px"><span onclick="showNewsHome()" style="cursor:pointer;font-size:13px;color:#888">← 返回新聞首頁</span></div>'+
+      '</div>';
+    navPush({type:'newsCat',id:catId});
+    switchTab('newsCat');
+  });
+}
+
+/* 初始化 */
+buildSidebar();
+buildHome();
+updateProgress();
+switchTab('home');
+
+/* iOS keyboard viewport fix */
+if(window.visualViewport){
+  window.visualViewport.addEventListener('resize',function(){
+    document.body.style.height=window.visualViewport.height+'px';
+  });
+  window.visualViewport.addEventListener('scroll',function(){
+    document.body.style.height=window.visualViewport.height+'px';
+  });
+}
+
+/* Swipe gesture navigation */
+(function(){
+  var sx=0,sy=0,swiping=false;
+  var ca=document.getElementById('contentArea');
+  ca.addEventListener('touchstart',function(e){
+    sx=e.touches[0].clientX;sy=e.touches[0].clientY;swiping=true;
+  },{passive:true});
+  ca.addEventListener('touchend',function(e){
+    if(!swiping)return;swiping=false;
+    var dx=e.changedTouches[0].clientX-sx;
+    var dy=e.changedTouches[0].clientY-sy;
+    if(Math.abs(dx)<80||Math.abs(dy)>Math.abs(dx)*0.6)return;
+    if(dx>0)navGo(-1);  /* swipe right = back */
+    else navGo(1);       /* swipe left = forward */
+  },{passive:true});
+})();
+</script>
+</body>
+</html>
