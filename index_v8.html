@@ -256,6 +256,7 @@ body{font-family:'Noto Sans TC','PingFang TC','Microsoft JhengHei',sans-serif;co
   .footer{display:none}
 }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
 </head>
 <body>
 
@@ -415,6 +416,13 @@ async function loadManifest(){
     if(tc) tc.textContent=ARTS.length;
     const ti=document.getElementById('tipCount');
     if(ti) ti.textContent=ARTS.length;
+    await Promise.all(ARTS.map(async a=>{
+      try{
+        const r=await fetch('data/articles/'+encodeURIComponent(a.file));
+        if(r.ok){ a.html=marked.parse(await r.text()); }
+        else{ a.html='<p style="color:#c33">⚠️ 無法載入 '+a.file+'（HTTP '+r.status+'）</p>'; }
+      }catch(err){ a.html='<p style="color:#c33">⚠️ 載入錯誤：'+err.message+'</p>'; }
+    }));
     buildSidebar();
     buildHome();
     updateProgress();
